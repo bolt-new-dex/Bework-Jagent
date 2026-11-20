@@ -108,7 +108,7 @@ footer a{color:var(--gold);text-decoration:none}
 <header>
   <a class="logo" href="/">BEWORK <em>PASS</em></a>
   <nav>
-    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#staking">Staking</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
+    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#shares">Shares</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
     <a class="btn dark" href="https://x.com/BeworkGem" target="_blank" rel="noopener">@BeworkGem</a>
     <button class="btn" id="wallet">Connect Binance Wallet</button>
   </nav>
@@ -124,17 +124,17 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="mrow"><span>You receive</span><b>A graded collector card + $BGEM allocation</b></div>
     <div class="big"><span style="font-size:16px;font-weight:600;opacity:.7">Total Passes&nbsp;</span><span id="bn">…</span><span style="font-size:16px;font-weight:600;opacity:.7"> / 3,333</span></div>
     <div class="bar"><i id="bi"></i></div>
-    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then 0.002 BNB each. Every Pass is a graded Mint Pass card: hold and stake your Passes to climb seven borders, from Bronze to Shadow, and earn for every hour they are staked. Only 3,333 Passes will ever exist — when they are gone, they are gone.</p>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then 0.002 BNB each. Each mint earns 10 shares, plus one for every invitee's first mint and one for each social task. 80% of every payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury. Only 3,333 Passes — and 500,000 shares — will ever exist.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>1 free · then 0.002 BNB each</b></div>
-    <div class="mrow"><span>Passes staked (all wallets)</span><b id="staked">…</b></div>
+    <div class="mrow"><span>Total shares</span><b id="tshares">…</b></div>
     <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
     <div class="yours">
       <div class="mrow"><span>Your minted</span><b id="cminted">—</b></div>
       <div class="mrow"><span>Free mints left</span><b id="cfree">—</b></div>
-      <div class="mrow"><span>Claimable WORK</span><b id="cpend">—</b></div>
-      <div class="mrow"><span>WORK balance</span><b id="cwork">—</b></div>
+      <div class="mrow"><span>Your shares</span><b id="cshares">—</b></div>
+      <div class="mrow"><span>Share of all shares</span><b id="csharepc">—</b></div>
     </div>
     <div class="rowbtns">
       <button class="btn black" id="sharex" style="flex:1">Share my pass on X</button>
@@ -166,7 +166,7 @@ footer a{color:var(--gold);text-decoration:none}
       <div><b id="cserial">Nº —</b><span>Serial</span></div>
       <div><b id="cagent">—</b><span>Agent ID</span></div>
       <div><b id="cnpc">—</b><span>Passes held</span></div>
-      <div><b id="cstaked">—</b><span>Staked</span></div>
+      <div><b id="cshr">—</b><span>Shares</span></div>
       <div><b id="cpoints">—</b><span>Points</span></div>
       <div><b id="cnext">150 pts</b><span>To next border</span></div>
     </div>
@@ -183,7 +183,7 @@ footer a{color:var(--gold);text-decoration:none}
   </div>
   <div class="panel" id="borders-sec">
     <h3>Borders &amp; points</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per Pass held · 150 per staked Pass · 1 point per 100 WORK (max 500). Points are read from public chain data — invites never buy points.</p>
+    <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per Pass held — nothing else buys points. Points set your border; shares set your $BGEM allocation.</p>
     <table>
       <tr><th>Border</th><th>Points</th></tr>
       <tr><td>01 · Bronze</td><td>0 – 149</td></tr>
@@ -221,16 +221,12 @@ footer a{color:var(--gold);text-decoration:none}
 </section>
 
 <section class="blk">
-  <div class="panel" id="staking">
-    <h3>Stake &amp; Claim</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 6px">Stake your BEWORK Passes to earn <b style="color:var(--txt)">10 $WORK per hour</b> for each one. Claims pay straight into your wallet in the same transaction. Claim fee <span id="sfee">0.00022</span> BNB · minimum claim <span id="smin">10</span> WORK.</p>
-    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Claimable</span><b id="spend">—</b></div>
-    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Your staked Passes</span><b id="sstakedn">—</b></div>
-    <div class="rowbtns"><button class="btn" id="claimbtn">CLAIM WORK</button></div>
-    <p class="mut" id="sstat" style="margin:10px 0 0">Connect your wallet to stake, unstake and claim.</p>
-    <div style="margin-top:16px"><span class="mut">Stake a Pass by its number:</span><br>
-    <input id="stakeid" type="number" min="1" placeholder="Pass Nº" style="margin-top:8px"> <button class="btn dark" id="stakebtn">Stake</button></div>
-    <div style="margin-top:14px"><span class="mut">Your staked:</span> <span id="schips">—</span></div>
+  <div class="panel" id="shares">
+    <h3>Shares &amp; the $BGEM allocation</h3>
+    <p class="mut" style="line-height:1.65;margin:0 0 6px">BEWORK runs on shares. Every mint earns <b style="color:var(--txt)">10 shares</b> — plus <b style="color:var(--txt)">1 share</b> for every invitee's first mint and <b style="color:var(--txt)">1 share</b> for each social task. When $BGEM lists, the allocation pool is split by shares: your shares &divide; all shares = your cut. 80% of every mint payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury.</p>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Total shares</span><b id="tshares2">…</b></div>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Your shares</span><b id="cshares2">—</b></div>
+    <p class="mut" style="margin:10px 0 0">Connect your wallet to see your shares. Mint shares are read from the chain; invite and task shares are counted from your invite link and the official posts.</p>
   </div>
 </section>
 
@@ -308,7 +304,7 @@ $("pausebtn").onclick=()=>{
 };
 async function live(){
   try{
-    const [s,o,t]=await Promise.all([call(NFT,"0x18160ddd"),call(NFT,"0x24bbd049"),call(STAKING,"0x817b1cd2")]);
+    const [s,o]=await Promise.all([call(NFT,"0x18160ddd"),call(NFT,"0x24bbd049")]);
     MINTED=Number(word(s));
     $("bn").textContent=MINTED.toLocaleString("en-US");
     $("bi").style.width=Math.max(MINTED/3333*100,0)+"%";
@@ -316,7 +312,7 @@ async function live(){
     if(MINTED>=3333){ms.textContent="Sold out"}
     else if(word(o)===1n){ms.textContent="Minting live"}
     else{ms.textContent="Mint paused"}
-    $("staked").textContent=Number(word(t)).toLocaleString("en-US");
+    $("tshares").textContent=(MINTED*10).toLocaleString("en-US")+" / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent=(MINTED*10).toLocaleString("en-US")+" / 500,000";
     $("ns").textContent=MINTED>=3333?"—":"#"+(MINTED+1).toLocaleString("en-US");
     latest();
   }catch(e){}
@@ -345,18 +341,16 @@ async function showPass(a){
   $("wstat").textContent="Wallet connected · "+short(a);
   $("cwallet").textContent=short(a);
   try{
-    const [bal,mint,has,stk,pend,wb]=await Promise.all([
-      call(NFT,"0x70a08231"+adr(a)),call(NFT,"0x3cef28d2"+adr(a)),call(NFT,"0x4eab3ef2"+adr(a)),
-      call(STAKING,"0xaf500ba3"+adr(a)),call(STAKING,"0xf40f0f52"+adr(a)),call(WORK,"0x70a08231"+adr(a))
+    const [bal,mint,has]=await Promise.all([
+      call(NFT,"0x70a08231"+adr(a)),call(NFT,"0x3cef28d2"+adr(a)),call(NFT,"0x4eab3ef2"+adr(a))
     ]);
-    const held=Number(word(bal)),minted=Number(word(mint)),stakedIds=decArr(stk),workWei=word(wb);
-    const workPts=Math.min(500,Number(workWei/(100n*10n**18n)));
-    const points=held*100+stakedIds.length*150+workPts;
+    const held=Number(word(bal)),minted=Number(word(mint));
+    const points=held*100;
     myTier=tierOf(points);
     const nx=nextOf(points);
     $("cagent").innerHTML=word(has)===1n?"<span style='color:var(--gn)'>Yes</span>":"<span style='color:var(--pk)'>No</span>";
-    $("cnpc").textContent=held;$("cstaked").textContent=stakedIds.length;$("cminted").textContent=minted+" / 12";
-    $("cpend").textContent=fmtW(word(pend));$("cwork").textContent=fmtW(workWei);
+    $("cnpc").textContent=held;$("cshr").textContent=(minted*10).toLocaleString("en-US");$("cminted").textContent=minted+" / 12";
+    $("cshares").textContent=(minted*10).toLocaleString("en-US");const cs2=$("cshares2");if(cs2)cs2.textContent=(minted*10).toLocaleString("en-US");$("csharepc").textContent=MINTED>0?(minted/MINTED*100).toFixed(2)+"%":"—";
     $("cpoints").textContent=points.toLocaleString("en-US");
     $("cfree").textContent=Math.max(0,1-minted);
     const curRow=minted>=12?12:minted+1;
@@ -367,7 +361,6 @@ async function showPass(a){
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";
     $("cserial").textContent=minted>0?("Nº "+String(minted).padStart(3,"0")+" · minter"):"Nº —";
     selectTier(myTier[0]);
-    refreshStake();
     if(flipped)drawQR("https://bework.pro/pass.html?ref="+account);
     $("passhint").textContent="This is your live pass — the card above is wearing your border. Flip it: the QR on the back is your real invite code. Share the card on X, or copy your invite link and bring the next worker in.";
   }catch(e){$("passhint").textContent="Could not read the chain for this wallet. Try again in a moment."}
@@ -382,7 +375,7 @@ $("sharex").onclick=()=>{
   const st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
-  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 1 free with a Binance Agent ID, then 0.002 BNB. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
+  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 1 free with a Binance Agent ID, then 0.002 BNB. Every mint earns 10 shares of the $BGEM allocation.\n\nCheck your pass:";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/pass.html?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
@@ -401,54 +394,7 @@ $("cp").onclick=async()=>{const b=$("cp");try{await navigator.clipboard.writeTex
 const ref=new URLSearchParams(location.search).get("ref");
 if(ref&&/^0x[0-9a-fA-F]{40}$/.test(ref)){const n=$("refnote");n.hidden=false;n.textContent="You were invited by "+short(ref)+" — mint your first Pass on the homepage, then come back here for your own pass."}
 selectTier("bronze");
-rp();/* ---- Stake & Claim (WORK staking; swap STAKING/WORK addresses to move to BGEM later) ---- */
-let S_FEE=220000000000000n;
-function encA(a){return "000000000000000000000000"+a.slice(2).toLowerCase()}
-function encU(v){return BigInt(v).toString(16).padStart(64,"0")}
-function encArr(ids){return encU(32)+encU(ids.length)+ids.map(encU).join("")}
-async function sendTx(tx){const p=provider();if(!p)throw new Error("No wallet found");const h=await p.request({method:"eth_sendTransaction",params:[{from:account,...tx}]});for(let i=0;i<40;i++){const r=await p.request({method:"eth_getTransactionReceipt",params:[h]});if(r){if(r.status!=="0x1")throw new Error("Transaction failed on chain");return h}await new Promise(r=>setTimeout(r,3000))}throw new Error("Timed out waiting for confirmation")}
-function sstat(t,ok){const e=$("sstat");e.textContent=t;e.style.color=ok?"var(--gn)":""}
-async function refreshStake(){
-  if(!account)return;
-  try{
-    const [pend,stk,fee,minc]=await Promise.all([call(STAKING,"0xf40f0f52"+adr(account)),call(STAKING,"0xaf500ba3"+adr(account)),call(STAKING,"0x99d32fc4"),call(STAKING,"0xab937cc1")]);
-    S_FEE=word(fee);
-    $("sfee").textContent=fmtBNB(S_FEE);$("smin").textContent=fmtW(word(minc)*10n**18n/10n**18n).split(" ")[0]==="0"?"10":String(Number(word(minc))/1e18);
-    $("spend").textContent=fmtW(word(pend));const ids=decArr(stk);
-    $("sstakedn").textContent=ids.length;
-    $("schips").innerHTML=ids.length?ids.map(id=>'<span class="chipid">Nº '+id+'<button class="btn dark" data-un="'+id+'">Unstake</button></span>').join(""):"none yet";
-    document.querySelectorAll("[data-un]").forEach(b=>b.onclick=()=>unstakePass(Number(b.dataset.un)));
-    sstat("Staking is live — rewards grow every hour.");
-  }catch(e){sstat("Could not read staking data. Try again in a moment.")}
-}
-function fmtBNB(w){return (Number(w)/1e18).toFixed(6).replace(/0+$/,"").replace(/\.$/,"")}
-async function stakePass(){
-  if(!account){sstat("Connect your wallet first (top of the page).");return}
-  const id=Number($("stakeid").value);if(!id||id<1){sstat("Enter the Pass number first.");return}
-  try{
-    sstat("Checking Pass Nº "+id+"…");
-    const own=await call(NFT,"0x6352211e"+encU(id));
-    if("0x"+own.slice(-40).toLowerCase()!==account.toLowerCase()){sstat("Pass Nº "+id+" is not in your wallet (or is already staked).");return}
-    const ap=await call(NFT,"0xe985e9c5"+adr(account)+adr(STAKING));
-    if(word(ap)!==1n){sstat("Approve staking in your wallet…");await sendTx({to:NFT,data:"0xa22cb465"+adr(STAKING)+encU(1)});}
-    sstat("Confirm the stake in your wallet…");
-    await sendTx({to:STAKING,data:"0x0fbf0a93"+encArr([id])});
-    sstat("Pass Nº "+id+" staked — it now earns 10 WORK per hour.",1);
-    $("stakeid").value="";refreshStake();showPass(account);
-  }catch(e){sstat(e.message&&e.message.includes("User rejected")?"Cancelled in the wallet.":("Stake failed: "+(e.message||e)))}
-}
-async function unstakePass(id){
-  if(!account)return;
-  try{sstat("Confirm unstaking Pass Nº "+id+"…");await sendTx({to:STAKING,data:"0xe449f341"+encArr([id])});sstat("Pass Nº "+id+" is back in your wallet.",1);refreshStake();showPass(account);}
-  catch(e){sstat("Unstake failed: "+(e.message||e))}
-}
-$("stakebtn").onclick=stakePass;
-$("claimbtn").onclick=async()=>{
-  if(!account){sstat("Connect your wallet first (top of the page).");return}
-  try{sstat("Confirm the claim in your wallet…");await sendTx({to:STAKING,data:"0x4e71d92d",value:"0x"+S_FEE.toString(16)});sstat("Claimed — the WORK is in your wallet.",1);refreshStake();showPass(account);}
-  catch(e){sstat("Claim failed: "+(e.message||e)+" — the minimum claim is 10 WORK and the fee must be attached.")}
-};
-live();setInterval(live,30000);
+rp();live();setInterval(live,30000);
 (async()=>{const p=provider();if(!p)return;try{const a=await p.request({method:"eth_accounts"});if(a&&a.length)showPass(a[0])}catch(e){}})();
 </script>
 </body>

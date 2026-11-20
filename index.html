@@ -119,14 +119,14 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="mintpanel">
     <div class="ttl"><span>$BEWORK · MINT PASS</span><span class="chip">BSC</span></div>
     <div class="wstat" id="wstat">Wallet not connected</div>
-    <div class="big"><span id="bn">…</span> <span style="font-size:15px;font-weight:600;opacity:.7">/ 3,333 minted</span></div>
+    <div class="mrow"><span>Current tier</span><b id="ctier">Tier 1 · FREE</b></div>
+    <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
+    <div class="mrow"><span>You receive</span><b>A graded collector card + $BGEM allocation</b></div>
+    <div class="big"><span style="font-size:16px;font-weight:600;opacity:.7">Total Passes&nbsp;</span><span id="bn">…</span><span style="font-size:16px;font-weight:600;opacity:.7"> / 3,333</span></div>
     <div class="bar"><i id="bi"></i></div>
-    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then 0.002 BNB each. Stake your Passes to earn 10 $WORK per hour, and every Pass you hold raises your Mint Pass border.</p>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then 0.002 BNB each. Every Pass is a graded Mint Pass card: hold and stake your Passes to climb seven borders, from Bronze to Shadow, and earn for every hour they are staked. Only 3,333 Passes will ever exist — when they are gone, they are gone.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>1 free · then 0.002 BNB each</b></div>
-    <div class="mrow"><span>Per Agent ID</span><b>Max 12 Passes</b></div>
-    <div class="mrow"><span>You receive</span><b>Pixel Passes + Mint Pass card</b></div>
-    <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
     <div class="mrow"><span>Passes staked (all wallets)</span><b id="staked">…</b></div>
     <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
@@ -176,9 +176,10 @@ footer a{color:var(--gold);text-decoration:none}
 
 <div class="cols">
   <div class="panel" id="board">
-    <h3>Leaderboard</h3>
-    <table><thead><tr><th>Latest mints</th><th>Owner</th></tr></thead><tbody id="latest"><tr><td colspan="2" class="mut">Loading…</td></tr></tbody></table>
-    <table style="margin-top:14px"><thead><tr><th colspan="2">Top wallets — latest 30 mints</th><th>Passes</th></tr></thead><tbody id="topwin"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
+    <h3>Top 100</h3>
+    <p class="mut" style="line-height:1.65;margin:0 0 8px">The biggest Pass holders, counted from the latest 300 mints and read straight from the chain on every load.</p>
+    <table><thead><tr><th>Rank</th><th>Wallet</th><th>Passes</th></tr></thead><tbody id="top100"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
+    <table style="margin-top:14px"><thead><tr><th>Latest mints</th><th>Owner</th></tr></thead><tbody id="latest"><tr><td colspan="2" class="mut">Loading…</td></tr></tbody></table>
   </div>
   <div class="panel" id="borders-sec">
     <h3>Borders &amp; points</h3>
@@ -199,11 +200,21 @@ footer a{color:var(--gold);text-decoration:none}
 <section class="blk">
   <div class="panel" id="pricing">
     <h3>Tiered pricing</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 10px">One flat price, fixed by the contract — it never rises. Your tier follows your own wallet's mint count.</p>
+    <p class="mut" style="line-height:1.65;margin:0 0 10px">1 free to 12 · then the wallet is full · Prices in BNB, fixed by the contract — they never rise. Your tier follows your own wallet's mint count.</p>
     <table>
-      <tr><th>Tier</th><th>Your mints</th><th>Price</th></tr>
-      <tr id="trow1"><td>1</td><td>Mint 1 per wallet</td><td>FREE · Agent ID</td></tr>
-      <tr id="trow2"><td>2</td><td>Mints 2–12 per wallet</td><td>0.002 BNB each</td></tr>
+      <tr><th>Tier</th><th>Mint</th><th>Price</th></tr>
+      <tr id="prow1"><td>1</td><td>Mint 1</td><td>FREE · Agent ID<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow2"><td>2</td><td>Mint 2</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow3"><td>3</td><td>Mint 3</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow4"><td>4</td><td>Mint 4</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow5"><td>5</td><td>Mint 5</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow6"><td>6</td><td>Mint 6</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow7"><td>7</td><td>Mint 7</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow8"><td>8</td><td>Mint 8</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow9"><td>9</td><td>Mint 9</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow10"><td>10</td><td>Mint 10</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow11"><td>11</td><td>Mint 11</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow12"><td>12</td><td>Mint 12</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
     </table>
     <p class="mut" id="tiern" style="margin:10px 0 0">Connect your wallet to see your current tier.</p>
   </div>
@@ -313,13 +324,19 @@ async function live(){
 async function latest(){
   if(!MINTED)return;
   try{
-    const ids=[];for(let i=MINTED;i>=1&&ids.length<30;i--)ids.push(i);
-    const owners=await Promise.all(ids.map(id=>call(NFT,"0x6352211e"+pad(id)).then(r=>"0x"+r.slice(26)).catch(()=>null)));
-    const rows=ids.slice(0,12).map((id,i)=>owners[i]?("<tr><td>BEWORK #"+id+"</td><td>"+short(owners[i])+"</td></tr>"):"").join("");
-    $("latest").innerHTML=rows||"<tr><td colspan='2' class='mut'>Could not load right now.</td></tr>";
+    const ids=[];for(let i=MINTED;i>=1&&ids.length<300;i--)ids.push(i);
+    const owners=[];
+    for(let c=0;c<ids.length;c+=60){
+      const part=await Promise.all(ids.slice(c,c+60).map(id=>call(NFT,"0x6352211e"+pad(id)).then(r=>"0x"+r.slice(26)).catch(()=>null)));
+      owners.push(...part);
+      if(c===0){
+        const rows=ids.slice(0,12).map((id,i)=>owners[i]?("<tr><td>BEWORK #"+id+"</td><td>"+short(owners[i])+"</td></tr>"):"").join("");
+        $("latest").innerHTML=rows||"<tr><td colspan='2' class='mut'>Could not load right now.</td></tr>";
+      }
+    }
     const cnt={};owners.forEach(o=>{if(o)cnt[o]=(cnt[o]||0)+1});
-    const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,5);
-    $("topwin").innerHTML=top.map((e,i)=>"<tr><td>"+(i+1)+"</td><td>"+short(e[0])+"</td><td>"+e[1]+"</td></tr>").join("")||"<tr><td colspan='3' class='mut'>—</td></tr>";
+    const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,100);
+    $("top100").innerHTML=top.map((e,i)=>"<tr><td>"+(i+1)+"</td><td>"+short(e[0])+"</td><td>"+e[1]+"</td></tr>").join("")||"<tr><td colspan='3' class='mut'>—</td></tr>";
   }catch(e){}
 }
 async function showPass(a){
@@ -342,8 +359,9 @@ async function showPass(a){
     $("cpend").textContent=fmtW(word(pend));$("cwork").textContent=fmtW(workWei);
     $("cpoints").textContent=points.toLocaleString("en-US");
     $("cfree").textContent=Math.max(0,1-minted);
-    $("trow1").classList.toggle("cur",minted<1);
-    $("trow2").classList.toggle("cur",minted>=1&&minted<12);
+    const curRow=minted>=12?12:minted+1;
+    for(let i=1;i<=12;i++){const r=$("prow"+i);if(r){r.classList.toggle("cur",i===curRow);const tg=r.querySelector(".curtag");if(tg)tg.hidden=i!==curRow}}
+    $("ctier").textContent=minted>=12?"Max reached · 12 Passes":(minted<1?"Tier 1 · FREE":"Tier 2 · 0.002 BNB");
     $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 Passes minted.":(minted<1?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is 0.002 BNB.");
     $("crank").textContent=myTier[1];
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";

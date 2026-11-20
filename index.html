@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://bework.pro/pass.html">
+<meta property="og:url" content="https://bework.pro/">
 <meta property="og:title" content="BEWORK Mint Pass">
 <meta property="og:description" content="A graded collector card + BEWORK NPC allocation for every Binance Agent ID.">
 <meta property="og:image" content="https://bework.pro/og-image.png">
@@ -104,7 +104,7 @@ footer a{color:var(--gold);text-decoration:none}
 <header>
   <a class="logo" href="/">BEWORK <em>PASS</em></a>
   <nav>
-    <a href="/">Mint</a><a href="/#staking">Staking</a><a href="/#market">Market</a>
+    <a href="#board">Leaderboard</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
     <a class="btn dark" href="https://x.com/Bework_pro" target="_blank" rel="noopener">@Bework_pro</a>
     <button class="btn" id="wallet">Connect Binance Wallet</button>
   </nav>
@@ -123,7 +123,7 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="mrow"><span>You receive</span><b>Pixel NPCs + Mint Pass card</b></div>
     <div class="mrow"><span>NPCs staked (all wallets)</span><b id="staked">…</b></div>
     <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
-    <a class="btn black" href="/">Mint on the homepage</a>
+    <a class="btn black" href="#agentmint">Mint with an agent</a>
     <div class="yours">
       <div class="mrow"><span>Your minted</span><b id="cminted">—</b></div>
       <div class="mrow"><span>Free mints left</span><b id="cfree">—</b></div>
@@ -137,7 +137,7 @@ footer a{color:var(--gold);text-decoration:none}
     <p id="sharestat" style="margin:10px 0 0;font-size:13px;font-weight:600"></p>
   </div>
 
-  <div class="cardzone">
+  <div class="cardzone" id="preview">
     <h2>Preview card</h2>
     <p class="sub">Seven borders — Bronze to Shadow. Connect your wallet and the card wears yours.</p>
     <div class="cardstage">
@@ -168,12 +168,12 @@ footer a{color:var(--gold);text-decoration:none}
 </div>
 
 <div class="cols">
-  <div class="panel">
+  <div class="panel" id="board">
     <h3>Leaderboard</h3>
     <table><thead><tr><th>Latest mints</th><th>Owner</th></tr></thead><tbody id="latest"><tr><td colspan="2" class="mut">Loading…</td></tr></tbody></table>
     <table style="margin-top:14px"><thead><tr><th colspan="2">Top wallets — latest 30 mints</th><th>NPCs</th></tr></thead><tbody id="topwin"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
   </div>
-  <div class="panel">
+  <div class="panel" id="borders-sec">
     <h3>Borders &amp; points</h3>
     <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per NPC held · 150 per staked NPC · 1 point per 100 WORK (max 500). Points are read from public chain data — invites never buy points.</p>
     <table>
@@ -190,12 +190,12 @@ footer a{color:var(--gold);text-decoration:none}
 </div>
 
 <section class="blk">
-  <div class="panel">
+  <div class="panel" id="agentmint">
     <h3>Mint with an agent</h3>
     <p class="mut" style="line-height:1.65;margin:0">Pick how many, then send the prompt below to the AI agent whose wallet holds a Binance Agent ID. The agent mints from its own wallet — one line in, NPCs out.</p>
     <div class="step" style="margin-top:14px"><span style="flex:1">How many</span><button class="btn dark" id="mi" aria-label="Fewer">−</button><b id="qn" style="font-family:'Space Grotesk',sans-serif;font-size:24px">1</b><button class="btn dark" id="pl" aria-label="More">+</button></div>
     <pre class="prompt" id="pr"></pre>
-    <div class="rowbtns"><button class="btn" id="cp">Copy prompt</button><a class="btn dark" href="/">Or mint from the homepage</a></div>
+    <div class="rowbtns"><button class="btn" id="cp">Copy prompt</button><a class="btn dark" href="#preview">Back to your card</a></div>
   </div>
 </section>
 

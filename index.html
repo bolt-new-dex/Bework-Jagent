@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BEWORK Mint Pass — BNB Chain</title>
-<meta name="description" content="The BEWORK Mint Pass: a graded collector card for Binance Agent ID holders. Mint pixel NPCs — 2 free, then $1 — climb seven borders from Bronze to Shadow, and show your card.">
+<meta name="description" content="The BEWORK Mint Pass: a graded collector card for Binance Agent ID holders. Mint pixel Passes — 2 free, then $1 — climb seven borders from Bronze to Shadow, and show your card.">
 <meta name="theme-color" content="#0d0a05">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bework.pro/">
 <meta property="og:title" content="BEWORK Mint Pass">
-<meta property="og:description" content="A graded collector card + BEWORK NPC allocation for every Binance Agent ID.">
+<meta property="og:description" content="A graded collector card + BEWORK Pass allocation for every Binance Agent ID.">
 <meta property="og:image" content="https://bework.pro/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://bework.pro/og-image.png">
@@ -83,6 +83,9 @@ nav a:hover{color:var(--tx)}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
 .panel h3{font-family:"Space Grotesk",sans-serif;font-size:15px;margin:0 0 12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:600}
 .panel table tr.cur td{color:var(--gold);font-weight:700}
+.chipid{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 12px;margin:0 6px 6px 0;font-size:13px}
+.chipid button{margin-left:6px;padding:3px 10px;font-size:12px}
+.panel input{background:#171106;border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:9px 12px;font-size:14px;width:150px}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:22px 0}
 @media(max-width:920px){.cols{grid-template-columns:1fr}}
 table{width:100%;border-collapse:collapse}
@@ -105,7 +108,7 @@ footer a{color:var(--gold);text-decoration:none}
 <header>
   <a class="logo" href="/">BEWORK <em>PASS</em></a>
   <nav>
-    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
+    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#staking">Staking</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
     <a class="btn dark" href="https://x.com/Bework_pro" target="_blank" rel="noopener">@Bework_pro</a>
     <button class="btn" id="wallet">Connect Binance Wallet</button>
   </nav>
@@ -118,13 +121,13 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="wstat" id="wstat">Wallet not connected</div>
     <div class="big"><span id="bn">…</span> <span style="font-size:15px;font-weight:600;opacity:.7">/ 3,333 minted</span></div>
     <div class="bar"><i id="bi"></i></div>
-    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 NPCs — the first 2 free, then $1 each. Stake your NPCs to earn 10 $WORK per hour, and every NPC you hold raises your Mint Pass border.</p>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first 2 free, then $1 each. Stake your Passes to earn 10 $WORK per hour, and every Pass you hold raises your Mint Pass border.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>2 free · then $1 each</b></div>
-    <div class="mrow"><span>Per Agent ID</span><b>Max 12 NPCs</b></div>
-    <div class="mrow"><span>You receive</span><b>Pixel NPCs + Mint Pass card</b></div>
+    <div class="mrow"><span>Per Agent ID</span><b>Max 12 Passes</b></div>
+    <div class="mrow"><span>You receive</span><b>Pixel Passes + Mint Pass card</b></div>
     <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
-    <div class="mrow"><span>NPCs staked (all wallets)</span><b id="staked">…</b></div>
+    <div class="mrow"><span>Passes staked (all wallets)</span><b id="staked">…</b></div>
     <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
     <div class="yours">
@@ -161,7 +164,7 @@ footer a{color:var(--gold);text-decoration:none}
       <div><b id="crank">Bronze</b><span>Your border</span></div>
       <div><b id="cserial">Nº —</b><span>Serial</span></div>
       <div><b id="cagent">—</b><span>Agent ID</span></div>
-      <div><b id="cnpc">—</b><span>NPCs held</span></div>
+      <div><b id="cnpc">—</b><span>Passes held</span></div>
       <div><b id="cstaked">—</b><span>Staked</span></div>
       <div><b id="cpoints">—</b><span>Points</span></div>
       <div><b id="cnext">150 pts</b><span>To next border</span></div>
@@ -174,11 +177,11 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="panel" id="board">
     <h3>Leaderboard</h3>
     <table><thead><tr><th>Latest mints</th><th>Owner</th></tr></thead><tbody id="latest"><tr><td colspan="2" class="mut">Loading…</td></tr></tbody></table>
-    <table style="margin-top:14px"><thead><tr><th colspan="2">Top wallets — latest 30 mints</th><th>NPCs</th></tr></thead><tbody id="topwin"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
+    <table style="margin-top:14px"><thead><tr><th colspan="2">Top wallets — latest 30 mints</th><th>Passes</th></tr></thead><tbody id="topwin"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
   </div>
   <div class="panel" id="borders-sec">
     <h3>Borders &amp; points</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per NPC held · 150 per staked NPC · 1 point per 100 WORK (max 500). Points are read from public chain data — invites never buy points.</p>
+    <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per Pass held · 150 per staked Pass · 1 point per 100 WORK (max 500). Points are read from public chain data — invites never buy points.</p>
     <table>
       <tr><th>Border</th><th>Points</th></tr>
       <tr><td>01 · Bronze</td><td>0 – 149</td></tr>
@@ -206,9 +209,23 @@ footer a{color:var(--gold);text-decoration:none}
 </section>
 
 <section class="blk">
+  <div class="panel" id="staking">
+    <h3>Stake &amp; Claim</h3>
+    <p class="mut" style="line-height:1.65;margin:0 0 6px">Stake your BEWORK Passes to earn <b style="color:var(--txt)">10 $WORK per hour</b> for each one. Claims pay straight into your wallet in the same transaction. Claim fee <span id="sfee">0.00022</span> BNB · minimum claim <span id="smin">10</span> WORK.</p>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Claimable</span><b id="spend">—</b></div>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Your staked Passes</span><b id="sstakedn">—</b></div>
+    <div class="rowbtns"><button class="btn" id="claimbtn">CLAIM WORK</button></div>
+    <p class="mut" id="sstat" style="margin:10px 0 0">Connect your wallet to stake, unstake and claim.</p>
+    <div style="margin-top:16px"><span class="mut">Stake a Pass by its number:</span><br>
+    <input id="stakeid" type="number" min="1" placeholder="Pass Nº" style="margin-top:8px"> <button class="btn dark" id="stakebtn">Stake</button></div>
+    <div style="margin-top:14px"><span class="mut">Your staked:</span> <span id="schips">—</span></div>
+  </div>
+</section>
+
+<section class="blk">
   <div class="panel" id="agentmint">
     <h3>Mint with an agent</h3>
-    <p class="mut" style="line-height:1.65;margin:0">Pick how many, then send the prompt below to the AI agent whose wallet holds a Binance Agent ID. The agent mints from its own wallet — one line in, NPCs out.</p>
+    <p class="mut" style="line-height:1.65;margin:0">Pick how many, then send the prompt below to the AI agent whose wallet holds a Binance Agent ID. The agent mints from its own wallet — one line in, Passes out.</p>
     <div class="step" style="margin-top:14px"><span style="flex:1">How many</span><button class="btn dark" id="mi" aria-label="Fewer">−</button><b id="qn" style="font-family:'Space Grotesk',sans-serif;font-size:24px">1</b><button class="btn dark" id="pl" aria-label="More">+</button></div>
     <pre class="prompt" id="pr"></pre>
     <div class="rowbtns"><button class="btn" id="cp">Copy prompt</button><a class="btn dark" href="#preview">Back to your card</a></div>
@@ -216,7 +233,7 @@ footer a{color:var(--gold);text-decoration:none}
 </section>
 
 <footer>
-  BEWORK — 3,333 pixel NPCs on BNB Chain. Mint Pass points are a community score read from public chain data; they are not a token and carry no cash value.<br>
+  BEWORK — 3,333 pixel Passes on BNB Chain. Mint Pass points are a community score read from public chain data; they are not a token and carry no cash value.<br>
   Dev: <a href="https://x.com/Bework_pro" target="_blank" rel="noopener">@Bework_pro on X</a> · <a href="/">bework.pro</a>
 </footer>
 </div>
@@ -321,11 +338,12 @@ async function showPass(a){
     $("cfree").textContent=Math.max(0,2-minted);
     $("trow1").classList.toggle("cur",minted<2);
     $("trow2").classList.toggle("cur",minted>=2&&minted<12);
-    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 NPCs minted.":(minted<2?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is $1.");
+    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 Passes minted.":(minted<2?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is $1.");
     $("crank").textContent=myTier[1];
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";
     $("cserial").textContent=minted>0?("Nº "+String(minted).padStart(3,"0")+" · minter"):"Nº —";
     selectTier(myTier[0]);
+    refreshStake();
     if(flipped)drawQR("https://bework.pro/pass.html?ref="+account);
     $("passhint").textContent="This is your live pass — the card above is wearing your border. Flip it: the QR on the back is your real invite code. Share the card on X, or copy your invite link and bring the next worker in.";
   }catch(e){$("passhint").textContent="Could not read the chain for this wallet. Try again in a moment."}
@@ -340,7 +358,7 @@ $("sharex").onclick=()=>{
   const st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
-  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" NPCs in my crew.\n\n3,333 pixel NPCs on BNB Chain — 2 free with a Binance Agent ID, then $1. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
+  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 2 free with a Binance Agent ID, then $1. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/pass.html?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
@@ -351,15 +369,62 @@ $("copyinvite").onclick=async()=>{
 };
 function rp(){
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel NPCs, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 2 per wallet are free, then $1 each. Pay with BNB (worth $1 each). Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
+  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 2 per wallet are free, then $1 each. Pay with BNB (worth $1 each). Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};
 $("cp").onclick=async()=>{const b=$("cp");try{await navigator.clipboard.writeText($("pr").textContent);b.textContent="Copied"}catch(e){const r=document.createRange();r.selectNodeContents($("pr"));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent="Selected — copy it"}setTimeout(()=>b.textContent="Copy prompt",1800)};
 const ref=new URLSearchParams(location.search).get("ref");
-if(ref&&/^0x[0-9a-fA-F]{40}$/.test(ref)){const n=$("refnote");n.hidden=false;n.textContent="You were invited by "+short(ref)+" — mint your first NPC on the homepage, then come back here for your own pass."}
+if(ref&&/^0x[0-9a-fA-F]{40}$/.test(ref)){const n=$("refnote");n.hidden=false;n.textContent="You were invited by "+short(ref)+" — mint your first Pass on the homepage, then come back here for your own pass."}
 selectTier("bronze");
-rp();live();setInterval(live,30000);
+rp();/* ---- Stake & Claim (WORK staking; swap STAKING/WORK addresses to move to BGEM later) ---- */
+let S_FEE=220000000000000n;
+function encA(a){return "000000000000000000000000"+a.slice(2).toLowerCase()}
+function encU(v){return BigInt(v).toString(16).padStart(64,"0")}
+function encArr(ids){return encU(32)+encU(ids.length)+ids.map(encU).join("")}
+async function sendTx(tx){const p=provider();if(!p)throw new Error("No wallet found");const h=await p.request({method:"eth_sendTransaction",params:[{from:account,...tx}]});for(let i=0;i<40;i++){const r=await p.request({method:"eth_getTransactionReceipt",params:[h]});if(r){if(r.status!=="0x1")throw new Error("Transaction failed on chain");return h}await new Promise(r=>setTimeout(r,3000))}throw new Error("Timed out waiting for confirmation")}
+function sstat(t,ok){const e=$("sstat");e.textContent=t;e.style.color=ok?"var(--gn)":""}
+async function refreshStake(){
+  if(!account)return;
+  try{
+    const [pend,stk,fee,minc]=await Promise.all([call(STAKING,"0xf40f0f52"+adr(account)),call(STAKING,"0xaf500ba3"+adr(account)),call(STAKING,"0x99d32fc4"),call(STAKING,"0xab937cc1")]);
+    S_FEE=word(fee);
+    $("sfee").textContent=fmtBNB(S_FEE);$("smin").textContent=fmtW(word(minc)*10n**18n/10n**18n).split(" ")[0]==="0"?"10":String(Number(word(minc))/1e18);
+    $("spend").textContent=fmtW(word(pend));const ids=decArr(stk);
+    $("sstakedn").textContent=ids.length;
+    $("schips").innerHTML=ids.length?ids.map(id=>'<span class="chipid">Nº '+id+'<button class="btn dark" data-un="'+id+'">Unstake</button></span>').join(""):"none yet";
+    document.querySelectorAll("[data-un]").forEach(b=>b.onclick=()=>unstakePass(Number(b.dataset.un)));
+    sstat("Staking is live — rewards grow every hour.");
+  }catch(e){sstat("Could not read staking data. Try again in a moment.")}
+}
+function fmtBNB(w){return (Number(w)/1e18).toFixed(6).replace(/0+$/,"").replace(/\.$/,"")}
+async function stakePass(){
+  if(!account){sstat("Connect your wallet first (top of the page).");return}
+  const id=Number($("stakeid").value);if(!id||id<1){sstat("Enter the Pass number first.");return}
+  try{
+    sstat("Checking Pass Nº "+id+"…");
+    const own=await call(NFT,"0x6352211e"+encU(id));
+    if("0x"+own.slice(-40).toLowerCase()!==account.toLowerCase()){sstat("Pass Nº "+id+" is not in your wallet (or is already staked).");return}
+    const ap=await call(NFT,"0xe985e9c5"+adr(account)+adr(STAKING));
+    if(word(ap)!==1n){sstat("Approve staking in your wallet…");await sendTx({to:NFT,data:"0xa22cb465"+adr(STAKING)+encU(1)});}
+    sstat("Confirm the stake in your wallet…");
+    await sendTx({to:STAKING,data:"0x0fbf0a93"+encArr([id])});
+    sstat("Pass Nº "+id+" staked — it now earns 10 WORK per hour.",1);
+    $("stakeid").value="";refreshStake();showPass(account);
+  }catch(e){sstat(e.message&&e.message.includes("User rejected")?"Cancelled in the wallet.":("Stake failed: "+(e.message||e)))}
+}
+async function unstakePass(id){
+  if(!account)return;
+  try{sstat("Confirm unstaking Pass Nº "+id+"…");await sendTx({to:STAKING,data:"0xe449f341"+encArr([id])});sstat("Pass Nº "+id+" is back in your wallet.",1);refreshStake();showPass(account);}
+  catch(e){sstat("Unstake failed: "+(e.message||e))}
+}
+$("stakebtn").onclick=stakePass;
+$("claimbtn").onclick=async()=>{
+  if(!account){sstat("Connect your wallet first (top of the page).");return}
+  try{sstat("Confirm the claim in your wallet…");await sendTx({to:STAKING,data:"0x4e71d92d",value:"0x"+S_FEE.toString(16)});sstat("Claimed — the WORK is in your wallet.",1);refreshStake();showPass(account);}
+  catch(e){sstat("Claim failed: "+(e.message||e)+" — the minimum claim is 10 WORK and the fee must be attached.")}
+};
+live();setInterval(live,30000);
 (async()=>{const p=provider();if(!p)return;try{const a=await p.request({method:"eth_accounts"});if(a&&a.length)showPass(a[0])}catch(e){}})();
 </script>
 </body>

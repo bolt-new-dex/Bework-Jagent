@@ -17,7 +17,7 @@ code{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--gold)}
 .warn{border-color:var(--pk)}
 </style></head><body><div class="wrap">
 <h1>Deploy BGEM — Owner Console</h1>
-<p class="sub">Bework Gem (BGEM) replaces WORK as the ecosystem reward token. This console deploys the BGEM token and its own staking contract (stake BEWORK NFTs, earn 10 BGEM/hour/NPC, claim fee 0.00022 BNB, min claim 10 BGEM), then funds the reward reserve. Every transaction is signed by the owner wallet — nothing here can sign for you. The old WORK token and staking keep working untouched. Top up the owner wallet with ~0.01 BNB before starting.</p>
+<p class="sub">Bework Gem (BGEM) replaces WORK as the ecosystem reward token. This console deploys the BGEM token and its own staking contract (stake BEWORK NFTs, earn 10 BGEM/hour/Pass, claim fee 0.00022 BNB, min claim 10 BGEM), then funds the reward reserve. Every transaction is signed by the owner wallet — nothing here can sign for you. The old WORK token and staking keep working untouched. Top up the owner wallet with ~0.01 BNB before starting.</p>
 
 <div class="card"><h2>01 — Connect the owner wallet</h2>
 <button id="connect">Connect wallet</button>
@@ -31,7 +31,7 @@ code{font-family:ui-monospace,monospace;font-size:12.5px;color:var(--gold)}
 
 <div class="card"><h2>03 — Deploy BGEM staking</h2>
 <label>BEWORK NFT contract</label><input id="nftAddr" value="0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee">
-<label>Reward rate (BGEM per NPC per hour)</label><input id="rate" value="10">
+<label>Reward rate (BGEM per Pass per hour)</label><input id="rate" value="10">
 <label>Claim fee (BNB)</label><input id="fee" value="0.00022">
 <label>Minimum claim (BGEM)</label><input id="minc" value="10">
 <button id="deployStaking">Deploy BGEM staking</button>
@@ -83,6 +83,6 @@ $("fund").onclick=async()=>{if(!acct)return $("st4").innerHTML="<span class='err
  $("st4").innerHTML="<span class='ok'>Reserve funded.</span> Tx: <code>"+h+"</code>"}catch(e){$("st4").innerHTML="<span class='err'>"+e.message+"</span>"}finally{$("fund").disabled=false}};
 $("refresh").onclick=async()=>{const t=$("tokenAddr").value.trim(),s=$("stakingAddr").value.trim();if(!acct||!t)return $("st5").innerHTML="<span class='err'>Connect and set the token address first.</span>";
  try{const bal=await call(t,"0x70a08231"+encAddr(acct));const sup=await call(t,"0x18160ddd");let out="Your BGEM balance: <b>"+(word(bal,0)/10n**18n).toLocaleString("en-US")+" BGEM</b> · Total supply: "+(word(sup,0)/10n**18n).toLocaleString("en-US")+" BGEM";
- if(s){const res=await call(t,"0x70a08231"+encAddr(s));const ts=await call(s,"0x817b1cd2");out+="<br>Staking reserve: <b>"+(word(res,0)/10n**18n).toLocaleString("en-US")+" BGEM</b> · NPCs staked: "+word(ts,0).toString()}
+ if(s){const res=await call(t,"0x70a08231"+encAddr(s));const ts=await call(s,"0x817b1cd2");out+="<br>Staking reserve: <b>"+(word(res,0)/10n**18n).toLocaleString("en-US")+" BGEM</b> · Passes staked: "+word(ts,0).toString()}
  out+="<br><br>Summary — Token: <code>"+t+"</code>"+(s?"<br>Staking: <code>"+s+"</code>":"");$("st5").innerHTML=out}catch(e){$("st5").innerHTML="<span class='err'>"+e.message+"</span>"}};
 </script></div></body></html>

@@ -158,7 +158,8 @@ footer a{color:var(--gold);text-decoration:none}
       <button class="btn" id="flipbtn">Flip card</button>
       <button class="btn dark" id="pausebtn">Pause</button>
     </div>
-    <div class="borders" id="borders"></div>
+<div id="tiershow" style="text-align:center;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.14em;font-size:15px;margin-top:12px;color:#d08a4a">01 · BRONZE</div>
+        <div class="borders" id="borders"></div>
     <div class="statgrid">
       <div><b id="cwallet">Not connected</b><span>Wallet</span></div>
       <div><b id="crank">Bronze</b><span>Your border</span></div>
@@ -256,10 +257,15 @@ let MINTED=0,account=null,qty=1,myTier=null,viewTier="bronze",flipped=false;
 const TIERS=[["bronze","Bronze",0],["silver","Silver",150],["gold","Gold",300],["platinum","Platinum",450],["master","Master",650],["diamond","Diamond",850],["shadow","Shadow",1000]];
 function tierOf(p){let t=TIERS[0];for(const x of TIERS)if(p>=x[2])t=x;return t}
 function nextOf(p){for(const x of TIERS)if(p<x[2])return x;return null}
+const TIERCOLORS={bronze:"#d08a4a",silver:"#d7dee6",gold:"#f0b90b",platinum:"#a8d8e6",master:"#ffb347",diamond:"#9fdcff",shadow:"#9a8cff"};
 function selectTier(key){
   viewTier=key;
   $("cardfront").src="cards/card-"+key+"-front.webp";
   $("cardback").src="cards/card-"+key+"-back.webp";
+  if(flipped){flipped=false;$("flipinner").classList.remove("flipped");$("flipbtn").textContent="Flip card"}
+  const ti=TIERS.findIndex(t=>t[0]===key),col=TIERCOLORS[key]||"#f0b90b",ts=$("tiershow");
+  if(ts){ts.textContent=String(ti+1).padStart(2,"0")+" · "+TIERS[ti][1].toUpperCase();ts.style.color=col}
+  $("sway").style.filter="drop-shadow(0 22px 44px "+col+"66)";
   document.querySelectorAll("#borders button").forEach(b=>{
     const k=b.dataset.k;b.classList.toggle("on",k===key);
     const mine=myTier&&myTier[0]===k;

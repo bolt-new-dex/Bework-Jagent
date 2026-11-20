@@ -115,7 +115,7 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="mintpanel">
     <div class="ttl"><span>$BEWORK · MINT PASS</span><span class="chip">BSC</span></div>
     <div class="wstat" id="wstat">Wallet not connected</div>
-    <div class="big"><span id="bn">…</span> <span style="font-size:15px;font-weight:600;opacity:.7">/ 5,000 minted</span></div>
+    <div class="big"><span id="bn">…</span> <span style="font-size:15px;font-weight:600;opacity:.7">/ 3,333 minted</span></div>
     <div class="bar"><i id="bi"></i></div>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>2 free · then $1 each</b></div>
@@ -200,7 +200,7 @@ footer a{color:var(--gold);text-decoration:none}
 </section>
 
 <footer>
-  BEWORK — 5,000 pixel NPCs on BNB Chain. Mint Pass points are a community score read from public chain data; they are not a token and carry no cash value.<br>
+  BEWORK — 3,333 pixel NPCs on BNB Chain. Mint Pass points are a community score read from public chain data; they are not a token and carry no cash value.<br>
   Dev: <a href="https://x.com/Bework_pro" target="_blank" rel="noopener">@Bework_pro on X</a> · <a href="/">bework.pro</a>
 </footer>
 </div>
@@ -261,9 +261,9 @@ async function live(){
     const [s,o,t]=await Promise.all([call(NFT,"0x18160ddd"),call(NFT,"0x24bbd049"),call(STAKING,"0x817b1cd2")]);
     MINTED=Number(word(s));
     $("bn").textContent=MINTED.toLocaleString("en-US");
-    $("bi").style.width=Math.max(MINTED/5000*100,0)+"%";
+    $("bi").style.width=Math.max(MINTED/3333*100,0)+"%";
     const ms=$("ms");
-    if(MINTED>=5000){ms.textContent="Sold out"}
+    if(MINTED>=3333){ms.textContent="Sold out"}
     else if(word(o)===1n){ms.textContent="Minting live"}
     else{ms.textContent="Mint paused"}
     $("staked").textContent=Number(word(t)).toLocaleString("en-US");
@@ -320,7 +320,7 @@ $("sharex").onclick=()=>{
   const st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
-  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" NPCs in my crew.\n\n5,000 pixel NPCs on BNB Chain — 2 free with a Binance Agent ID, then $1. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
+  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" NPCs in my crew.\n\n3,333 pixel NPCs on BNB Chain — 2 free with a Binance Agent ID, then $1. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/pass.html?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
@@ -331,7 +331,7 @@ $("copyinvite").onclick=async()=>{
 };
 function rp(){
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 5,000 one-of-a-kind pixel NPCs, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 2 per wallet are free, then $1 each. Pay with BNB (worth $1 each). Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
+  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel NPCs, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 2 per wallet are free, then $1 each. Pay with BNB (worth $1 each). Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};

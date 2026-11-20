@@ -82,6 +82,7 @@ nav a:hover{color:var(--tx)}
 .rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
 .panel h3{font-family:"Space Grotesk",sans-serif;font-size:15px;margin:0 0 12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.panel table tr.cur td{color:var(--gold);font-weight:700}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:22px 0}
 @media(max-width:920px){.cols{grid-template-columns:1fr}}
 table{width:100%;border-collapse:collapse}
@@ -104,7 +105,7 @@ footer a{color:var(--gold);text-decoration:none}
 <header>
   <a class="logo" href="/">BEWORK <em>PASS</em></a>
   <nav>
-    <a href="#board">Leaderboard</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
+    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
     <a class="btn dark" href="https://x.com/Bework_pro" target="_blank" rel="noopener">@Bework_pro</a>
     <button class="btn" id="wallet">Connect Binance Wallet</button>
   </nav>
@@ -117,10 +118,12 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="wstat" id="wstat">Wallet not connected</div>
     <div class="big"><span id="bn">…</span> <span style="font-size:15px;font-weight:600;opacity:.7">/ 3,333 minted</span></div>
     <div class="bar"><i id="bi"></i></div>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 NPCs — the first 2 free, then $1 each. Stake your NPCs to earn 10 $WORK per hour, and every NPC you hold raises your Mint Pass border.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>2 free · then $1 each</b></div>
     <div class="mrow"><span>Per Agent ID</span><b>Max 12 NPCs</b></div>
     <div class="mrow"><span>You receive</span><b>Pixel NPCs + Mint Pass card</b></div>
+    <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
     <div class="mrow"><span>NPCs staked (all wallets)</span><b id="staked">…</b></div>
     <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
@@ -188,6 +191,19 @@ footer a{color:var(--gold);text-decoration:none}
     </table>
   </div>
 </div>
+
+<section class="blk">
+  <div class="panel" id="pricing">
+    <h3>Tiered pricing</h3>
+    <p class="mut" style="line-height:1.65;margin:0 0 10px">One flat price, fixed by the contract — it never rises. Your tier follows your own wallet's mint count.</p>
+    <table>
+      <tr><th>Tier</th><th>Your mints</th><th>Price</th></tr>
+      <tr id="trow1"><td>1</td><td>Mints 1–2 per wallet</td><td>FREE · Agent ID</td></tr>
+      <tr id="trow2"><td>2</td><td>Mints 3–12 per wallet</td><td>$1 each</td></tr>
+    </table>
+    <p class="mut" id="tiern" style="margin:10px 0 0">Connect your wallet to see your current tier.</p>
+  </div>
+</section>
 
 <section class="blk">
   <div class="panel" id="agentmint">
@@ -267,6 +283,7 @@ async function live(){
     else if(word(o)===1n){ms.textContent="Minting live"}
     else{ms.textContent="Mint paused"}
     $("staked").textContent=Number(word(t)).toLocaleString("en-US");
+    $("ns").textContent=MINTED>=3333?"—":"#"+(MINTED+1).toLocaleString("en-US");
     latest();
   }catch(e){}
 }
@@ -302,6 +319,9 @@ async function showPass(a){
     $("cpend").textContent=fmtW(word(pend));$("cwork").textContent=fmtW(workWei);
     $("cpoints").textContent=points.toLocaleString("en-US");
     $("cfree").textContent=Math.max(0,2-minted);
+    $("trow1").classList.toggle("cur",minted<2);
+    $("trow2").classList.toggle("cur",minted>=2&&minted<12);
+    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 NPCs minted.":(minted<2?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is $1.");
     $("crank").textContent=myTier[1];
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";
     $("cserial").textContent=minted>0?("Nº "+String(minted).padStart(3,"0")+" · minter"):"Nº —";

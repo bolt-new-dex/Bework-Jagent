@@ -226,7 +226,8 @@ footer a{color:var(--gold);text-decoration:none}
     <p class="mut" style="line-height:1.65;margin:0 0 6px">BEWORK runs on shares. Every mint earns <b style="color:var(--txt)">10 shares</b> — plus <b style="color:var(--txt)">1 share</b> for every invitee's first mint and <b style="color:var(--txt)">1 share</b> for each social task. When $BGEM lists, the allocation pool is split by shares: your shares &divide; all shares = your cut. 80% of every mint payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury.</p>
     <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Total shares</span><b id="tshares2">…</b></div>
     <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Your shares</span><b id="cshares2">—</b></div>
-    <p class="mut" style="margin:10px 0 0">Connect your wallet to see your shares. Mint shares are read from the chain; invite and task shares are counted from your invite link and the official posts.</p>
+    <p class="mut" style="margin:10px 0 0">Connect your wallet to see your shares. Mint shares are read from the chain; invite and task shares are counted into the board below.</p>
+    <table style="margin-top:14px"><thead><tr><th>Rank</th><th>Wallet</th><th>Invite + task shares</th></tr></thead><tbody id="bonusboard"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
   </div>
 </section>
 
@@ -312,7 +313,7 @@ async function live(){
     if(MINTED>=3333){ms.textContent="Sold out"}
     else if(word(o)===1n){ms.textContent="Minting live"}
     else{ms.textContent="Mint paused"}
-    $("tshares").textContent=(MINTED*10).toLocaleString("en-US")+" / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent=(MINTED*10).toLocaleString("en-US")+" / 500,000";
+    $("tshares").textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000";
     $("ns").textContent=MINTED>=3333?"—":"#"+(MINTED+1).toLocaleString("en-US");
     latest();
   }catch(e){}
@@ -349,8 +350,9 @@ async function showPass(a){
     myTier=tierOf(points);
     const nx=nextOf(points);
     $("cagent").innerHTML=word(has)===1n?"<span style='color:var(--gn)'>Yes</span>":"<span style='color:var(--pk)'>No</span>";
-    $("cnpc").textContent=held;$("cshr").textContent=(minted*10).toLocaleString("en-US");$("cminted").textContent=minted+" / 12";
-    $("cshares").textContent=(minted*10).toLocaleString("en-US");const cs2=$("cshares2");if(cs2)cs2.textContent=(minted*10).toLocaleString("en-US");$("csharepc").textContent=MINTED>0?(minted/MINTED*100).toFixed(2)+"%":"—";
+    const myShares=minted*10+(BONUS[account.toLowerCase()]||0),totShares=MINTED*10+BONUS_TOT;
+    $("cnpc").textContent=held;$("cshr").textContent=myShares.toLocaleString("en-US");$("cminted").textContent=minted+" / 12";
+    $("cshares").textContent=myShares.toLocaleString("en-US");const cs2=$("cshares2");if(cs2)cs2.textContent=myShares.toLocaleString("en-US");$("csharepc").textContent=totShares>0?(myShares/totShares*100).toFixed(2)+"%":"—";
     $("cpoints").textContent=points.toLocaleString("en-US");
     $("cfree").textContent=Math.max(0,1-minted);
     const curRow=minted>=12?12:minted+1;
@@ -394,7 +396,19 @@ $("cp").onclick=async()=>{const b=$("cp");try{await navigator.clipboard.writeTex
 const ref=new URLSearchParams(location.search).get("ref");
 if(ref&&/^0x[0-9a-fA-F]{40}$/.test(ref)){const n=$("refnote");n.hidden=false;n.textContent="You were invited by "+short(ref)+" — mint your first Pass on the homepage, then come back here for your own pass."}
 selectTier("bronze");
-rp();live();setInterval(live,30000);
+rp();let BONUS={},BONUS_TOT=0;
+async function loadBonus(){
+  try{
+    const r=await fetch("shares.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json();
+    BONUS={};for(const k in (j.bonus||{}))BONUS[k.toLowerCase()]=Number(j.bonus[k])||0;
+    BONUS_TOT=Object.values(BONUS).reduce((a,b)=>a+b,0);
+    const rows=Object.entries(BONUS).sort((a,b)=>b[1]-a[1]).slice(0,100);
+    const bb=$("bonusboard");if(bb)bb.innerHTML=rows.length?rows.map((e,i)=>"<tr><td>"+(i+1)+"</td><td>"+short(e[0])+"</td><td>"+e[1].toLocaleString("en-US")+"</td></tr>").join(""):"<tr><td colspan='3' class='mut'>No invite or task shares counted yet — the first count lands with the launch post.</td></tr>";
+    if(MINTED>0){$("tshares").textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000"}
+    if(account)showPass(account);
+  }catch(e){}
+}
+loadBonus();live();setInterval(live,30000);
 (async()=>{const p=provider();if(!p)return;try{const a=await p.request({method:"eth_accounts"});if(a&&a.length)showPass(a[0])}catch(e){}})();
 </script>
 </body>

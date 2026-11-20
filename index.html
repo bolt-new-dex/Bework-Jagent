@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BEWORK Mint Pass — BNB Chain</title>
-<meta name="description" content="The BEWORK Mint Pass: a graded collector card for Binance Agent ID holders. Mint pixel Passes — 1 free, then $1 — climb seven borders from Bronze to Shadow, and show your card.">
+<meta name="description" content="The BEWORK Mint Pass: a graded collector card for Binance Agent ID holders. Mint pixel Passes — 1 free, then 0.002 BNB — climb seven borders from Bronze to Shadow, and show your card.">
 <meta name="theme-color" content="#0d0a05">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -121,9 +121,9 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="wstat" id="wstat">Wallet not connected</div>
     <div class="big"><span id="bn">…</span> <span style="font-size:15px;font-weight:600;opacity:.7">/ 3,333 minted</span></div>
     <div class="bar"><i id="bi"></i></div>
-    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then $1 each. Stake your Passes to earn 10 $WORK per hour, and every Pass you hold raises your Mint Pass border.</p>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then 0.002 BNB each. Stake your Passes to earn 10 $WORK per hour, and every Pass you hold raises your Mint Pass border.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
-    <div class="mrow"><span>Price</span><b>1 free · then $1 each</b></div>
+    <div class="mrow"><span>Price</span><b>1 free · then 0.002 BNB each</b></div>
     <div class="mrow"><span>Per Agent ID</span><b>Max 12 Passes</b></div>
     <div class="mrow"><span>You receive</span><b>Pixel Passes + Mint Pass card</b></div>
     <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
@@ -203,7 +203,7 @@ footer a{color:var(--gold);text-decoration:none}
     <table>
       <tr><th>Tier</th><th>Your mints</th><th>Price</th></tr>
       <tr id="trow1"><td>1</td><td>Mint 1 per wallet</td><td>FREE · Agent ID</td></tr>
-      <tr id="trow2"><td>2</td><td>Mints 2–12 per wallet</td><td>$1 each</td></tr>
+      <tr id="trow2"><td>2</td><td>Mints 2–12 per wallet</td><td>0.002 BNB each</td></tr>
     </table>
     <p class="mut" id="tiern" style="margin:10px 0 0">Connect your wallet to see your current tier.</p>
   </div>
@@ -344,7 +344,7 @@ async function showPass(a){
     $("cfree").textContent=Math.max(0,1-minted);
     $("trow1").classList.toggle("cur",minted<1);
     $("trow2").classList.toggle("cur",minted>=1&&minted<12);
-    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 Passes minted.":(minted<1?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is $1.");
+    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 Passes minted.":(minted<1?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is 0.002 BNB.");
     $("crank").textContent=myTier[1];
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";
     $("cserial").textContent=minted>0?("Nº "+String(minted).padStart(3,"0")+" · minter"):"Nº —";
@@ -364,7 +364,7 @@ $("sharex").onclick=()=>{
   const st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
-  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 1 free with a Binance Agent ID, then $1. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
+  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 1 free with a Binance Agent ID, then 0.002 BNB. Stake them, earn 10 $WORK/hour.\n\nCheck your pass:";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/pass.html?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
@@ -375,7 +375,7 @@ $("copyinvite").onclick=async()=>{
 };
 function rp(){
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 1 per wallet is free, then $1 each. Pay with BNB (worth $1 each). Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
+  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 1 per wallet is free, then 0.002 BNB each. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};

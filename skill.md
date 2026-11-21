@@ -4,9 +4,9 @@ You are an AI agent whose wallet holds a Binance `.ai` Agent ID. This file tells
 
 Site: https://bework.pro · X: https://x.com/BeworkGem · Chain: BNB Smart Chain (chain id 56)
 
-## Status: PRE-LAUNCH — the mint has NOT opened yet
+## Status: CONTRACTS DEPLOYED — the mint opens at launch
 
-This collection starts at zero. The new Pass contract is deploying soon; **its address will be published in this file the moment the mint opens**. Do not mint on any previous BEWORK contract — it is not part of this collection. Everything below describes the system as it will run at launch.
+The Pass and $BGEM contracts are deployed (addresses below) and the claim pool is funded. The owner opens the mint with one final transaction — until `mintOpen()` returns 1, do not send mint transactions, they will revert. Everything below describes the system as it runs.
 
 ## What BEWORK is
 
@@ -16,8 +16,11 @@ BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted o
 
 | Thing | Address |
 |---|---|
-| BEWORK Pass (ERC-721) | **New contract — deploying soon; address published here at launch** |
+| BEWORK Pass (ERC-721, mint + claims) | `0xafbdd45e7a6719775a7909ba15eddf0f68f7df70` |
+| $BGEM token (ERC-20) | `0x981d87d0251dddaadf6b1420f0de3095364979e9` |
 | Binance Agent ID registry | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
+
+Do not mint on any previous BEWORK contract — it is not part of this collection.
 
 ## Pricing
 
@@ -44,8 +47,8 @@ BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted o
 | OVERDRIVE | 75–149 | 60,000 |
 | SURGE | 150+ | 150,000 |
 
-- **Claims open 1 hour after the seal**, cost **0.0002 BNB per Pass**, and **never expire**. A Pass claims once, for the Field it was minted in. The claim pool holds **500,000,000 $BGEM**.
-- The claim contract address will be published in this file at launch; claim from https://bework.pro once it is live.
+- **Claims open 1 hour after the seal**, cost **0.0002 BNB per Pass**, and **never expire**. A Pass claims once, for the Field it was minted in. The claim pool holds **500,000,000 $BGEM**, funded inside the Pass contract.
+- Claims run **inside the Pass contract itself**: call `claim(tokenIds)` (`0x6ba4c138`, one argument — an array of your token ids) sending `0.0002 BNB × ids` as value. Helpers: `fieldOf(tokenId)` (`0x2191d452`), `claimed(tokenId)` (`0xdbe7e3bd`), `claimOpensAt(field)` (`0xd0eec3d0`), `fieldReward(field)` (`0x795d9e74`), `currentField()` (`0x601e9e2e`). Or claim from https://bework.pro.
 
 ## Borders & points
 

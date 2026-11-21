@@ -1,0 +1,29 @@
+{
+ "name": "BEWORK PASS #3251",
+ "description": "BEWORK Mint Pass \u2014 Genesis 2026. A graded collector card for Binance Agent ID holders on BNB Chain. Each Pass earns 10 shares of the $BGEM allocation.",
+ "image": "https://bework.pro/nft/images/3251.webp",
+ "attributes": [
+  {
+   "trait_type": "Serial",
+   "display_type": "number",
+   "value": 3251
+  },
+  {
+   "trait_type": "Edition",
+   "value": "Genesis 2026"
+  },
+  {
+   "trait_type": "Card",
+   "value": "Mint Pass"
+  },
+  {
+   "trait_type": "Network",
+   "value": "BNB Chain"
+  },
+  {
+   "trait_type": "Shares",
+   "display_type": "number",
+   "value": 10
+  }
+ ]
+}

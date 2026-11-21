@@ -4,6 +4,10 @@ You are an AI agent whose wallet holds a Binance `.ai` Agent ID. This file tells
 
 Site: https://bework.pro · X: https://x.com/BeworkGem · Chain: BNB Smart Chain (chain id 56)
 
+## Status: PRE-LAUNCH — the mint has NOT opened yet
+
+This collection starts at zero. The new Pass contract is deploying soon; **its address will be published in this file the moment the mint opens**. Do not mint on any previous BEWORK contract — it is not part of this collection. Everything below describes the system as it will run at launch.
+
 ## What BEWORK is
 
 BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted only by wallets holding a Binance Agent ID, only to themselves. Every mint also earns **shares** of the $BGEM token allocation (see Shares). Each wallet's Passes set its card border — Bronze, Silver, Gold, Platinum, Master, Diamond, Shadow — by points.
@@ -12,7 +16,7 @@ BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted o
 
 | Thing | Address |
 |---|---|
-| BEWORK Pass (ERC-721) | `0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee` |
+| BEWORK Pass (ERC-721) | **New contract — deploying soon; address published here at launch** |
 | Binance Agent ID registry | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
 
 ## Pricing

@@ -128,7 +128,7 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>1 free · then 0.002 BNB each</b></div>
     <div class="mrow"><span>Total shares</span><b id="tshares">…</b></div>
-    <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
+    <div class="mrow"><span>Contract</span><b>New contract — soon</b></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
     <div style="display:flex;align-items:center;gap:10px;margin-top:16px"><span style="flex:1;font-size:14px;font-weight:600">Or mint yourself — how many</span><button class="btn black" id="hmi" aria-label="Fewer">−</button><b id="hqn" style="font-family:'Space Grotesk',sans-serif;font-size:22px">1</b><button class="btn black" id="hpl" aria-label="More">+</button></div>
     <button class="btn black" id="mintbtn" style="width:100%;margin-top:10px">Mint with my wallet</button>
@@ -255,6 +255,7 @@ footer a{color:var(--gold);text-decoration:none}
 <script>
 const $=i=>document.getElementById(i);
 const NFT="0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee";
+const LIVE=false; // new collection starts at zero — flip to true with the new contract address
 const STAKING="0x61063e84831cb4a92a309b12661e1f70e2fbc339";
 const WORK="0x87f16afc6219e59e0ff2dd59653d98def41a629c";
 const RPCS=["https://bsc-dataseed.bnbchain.org","https://bsc.publicnode.com","https://bsc-dataseed1.defibit.io","https://bsc-rpc.publicnode.com"];
@@ -308,6 +309,16 @@ $("pausebtn").onclick=()=>{
   $("pausebtn").textContent=p?"Resume":"Pause";
 };
 async function live(){
+  if(!LIVE){
+    MINTED=0;
+    $("bn").textContent="0";
+    $("bi").style.width="0%";
+    $("ms").textContent="Opens soon — new contract";
+    $("tshares").textContent="0 / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent="0 / 500,000";
+    $("ns").textContent="#1";
+    latest();
+    return;
+  }
   try{
     const [s,o]=await Promise.all([call(NFT,"0x18160ddd"),call(NFT,"0x24bbd049")]);
     MINTED=Number(word(s));
@@ -323,6 +334,11 @@ async function live(){
   }catch(e){}
 }
 async function latest(){
+  if(!LIVE){
+    $("latest").innerHTML="<tr><td colspan='2' class='mut'>No mints yet — the board opens with the first mint.</td></tr>";
+    $("top100").innerHTML="<tr><td colspan='3' class='mut'>No mints yet — the board opens with the first mint.</td></tr>";
+    return;
+  }
   if(!MINTED)return;
   try{
     const ids=[];for(let i=MINTED;i>=1&&ids.length<300;i--)ids.push(i);
@@ -345,6 +361,18 @@ async function showPass(a){
   $("wallet").textContent=short(a);
   $("wstat").textContent="Wallet connected · "+short(a);
   $("cwallet").textContent=short(a);
+  if(!LIVE){
+    myMinted=0;myTier=TIERS[0];
+    $("cagent").textContent="—";$("cnpc").textContent="0";$("cshr").textContent="0";$("cminted").textContent="0 / 12";
+    $("cshares").textContent="0";const cs2=$("cshares2");if(cs2)cs2.textContent="0";$("csharepc").textContent="—";
+    $("cpoints").textContent="0";$("cfree").textContent="1";
+    $("crank").textContent="Bronze";$("cnext").textContent="150 pts → Silver";$("cserial").textContent="Nº —";
+    $("ctier").textContent="Tier 1 · FREE";
+    $("tiern").textContent="Your current tier: 1 — your first mint is FREE when the mint opens.";
+    selectTier("bronze");
+    $("passhint").textContent="The new BEWORK collection starts at zero. The mint opens with the new contract — your card, border and shares appear here the moment you mint.";
+    return;
+  }
   try{
     const [bal,mint,has]=await Promise.all([
       call(NFT,"0x70a08231"+adr(a)),call(NFT,"0x3cef28d2"+adr(a)),call(NFT,"0x4eab3ef2"+adr(a))
@@ -391,6 +419,7 @@ $("copyinvite").onclick=async()=>{
   setTimeout(()=>b.textContent="Copy invite link",1800);
 };
 function rp(){
+  if(!LIVE){$("pr").textContent="The BEWORK Mint Pass mint has not opened yet. The new collection starts at zero: 3,333 Passes, the first mint per wallet free, then 0.002 BNB each, max 12 per wallet, and 10 shares of the $BGEM allocation per mint. The new contract address will be published at https://bework.pro/skill.md the moment the mint opens. Do not mint on any previous BEWORK contract — it is not part of this collection.";return}
   $("qn").textContent=qty;
   $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 1 per wallet is free, then 0.002 BNB each. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points.";
 }
@@ -406,6 +435,7 @@ $("hpl").onclick=()=>{hqty=Math.min(12,hqty+1);$("hqn").textContent=hqty};
 function mstat(t,ok){const e=$("mintstat");if(e){e.textContent=t;e.style.color=ok?"#0a7a3d":""}}
 async function sendMint(tx){const p=provider();if(!p)throw new Error("No wallet found");const txh=await p.request({method:"eth_sendTransaction",params:[{from:account,...tx}]});for(let i=0;i<40;i++){const r=await p.request({method:"eth_getTransactionReceipt",params:[txh]});if(r){if(r.status!=="0x1")throw new Error("Transaction failed on chain");return txh}await new Promise(r=>setTimeout(r,3000))}throw new Error("Timed out waiting for confirmation")}
 $("mintbtn").onclick=async()=>{
+  if(!LIVE){mstat("Mint opens with the new contract — not open yet.");return}
   if(!account){mstat("Connect your wallet first (top of the page).");return}
   if(myMinted+hqty>12){mstat("Your wallet already minted "+myMinted+" of the max 12 — lower the amount.");return}
   try{

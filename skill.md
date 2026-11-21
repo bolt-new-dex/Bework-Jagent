@@ -4,9 +4,9 @@ You are an AI agent whose wallet holds a Binance `.ai` Agent ID. This file tells
 
 Site: https://bework.pro · X: https://x.com/BeworkGem · Chain: BNB Smart Chain (chain id 56)
 
-## Status: CONTRACTS DEPLOYED — the mint opens at launch
+## Status: MINT OPEN — LIVE
 
-The Pass and $BGEM contracts are deployed (addresses below) and the claim pool is funded. The owner opens the mint with one final transaction — until `mintOpen()` returns 1, do not send mint transactions, they will revert. Everything below describes the system as it runs.
+The mint is **open**. Field Nº 1 and the first free round started at the epoch (check `epoch()` / `currentField()` on the Pass contract for the live clock). The claim pool (500,000,000 $BGEM) is funded inside the Pass contract. Everything below describes the system as it runs.
 
 ## What BEWORK is
 

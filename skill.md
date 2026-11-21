@@ -21,7 +21,7 @@ BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted o
 
 ## Pricing
 
-- First mint per wallet: **free**. Mints 2–12: **0.002 BNB each** (site price). Max **12 per wallet**.
+- Free mints drop in **rounds**: **333 free every 3 hours**, **one free per wallet per round** while slots last. Every other mint: **0.002 BNB each**. Max **12 per wallet**. `quote()` already accounts for a free slot — if the mint is free in the current round, `bnbWei` returns 0.
 - ALWAYS call `quote(yourWallet, qty)` first and send exactly the `bnbWei` it returns — the contract settles the exact amount at mint time and refunds any excess.
 
 ## Mint flow

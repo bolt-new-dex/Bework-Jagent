@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BEWORK Mint Pass — BNB Chain</title>
-<meta name="description" content="The BEWORK Mint Pass: a graded collector card for Binance Agent ID holders. Mint pixel Passes — 1 free, then 0.002 BNB — climb seven borders from Bronze to Shadow, and show your card.">
+<meta name="description" content="The BEWORK Mint Pass: a graded collector card for Binance Agent ID holders. Mint pixel Passes — 333 free every 3 hours in free rounds, otherwise 0.002 BNB — climb seven borders from Bronze to Shadow, and show your card.">
 <meta name="theme-color" content="#0d0a05">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -121,14 +121,14 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="mintpanel">
     <div class="ttl"><span>$BEWORK · MINT PASS</span><span class="chip">BSC</span></div>
     <div class="wstat" id="wstat">Wallet not connected</div>
-    <div class="mrow"><span>Current tier</span><b id="ctier">Tier 1 · FREE</b></div>
+    <div class="mrow"><span>Current tier</span><b id="ctier">Tier 1 · FREE rounds</b></div>
     <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
     <div class="mrow"><span>You receive</span><b>A graded collector card + $BGEM allocation</b></div>
     <div class="big"><span style="font-size:16px;font-weight:600;opacity:.7">Total Passes&nbsp;</span><span id="bn">…</span><span style="font-size:16px;font-weight:600;opacity:.7"> / 3,333</span></div>
     <div class="bar"><i id="bi"></i></div>
-    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes — the first one free, then 0.002 BNB each. Each mint earns 10 shares, plus one for every invitee's first mint and one for each social task. 80% of every payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury. Only 3,333 Passes — and 500,000 shares — will ever exist.</p>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes. Free mints drop in rounds — 333 free every 3 hours, one per wallet per round — and every other mint is 0.002 BNB. Each mint earns 10 shares, plus one for every invitee's first mint and one for each social task. 80% of every payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury. Only 3,333 Passes — and 500,000 shares — will ever exist.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
-    <div class="mrow"><span>Price</span><b>1 free · then 0.002 BNB each</b></div>
+    <div class="mrow"><span>Price</span><b>333 free every 3 hrs · else 0.002 BNB each</b></div>
     <div class="mrow"><span>Total shares</span><b id="tshares">…</b></div>
     <div class="mrow"><span>Contract</span><b>New contract — soon</b></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
@@ -137,7 +137,7 @@ footer a{color:var(--gold);text-decoration:none}
     <p id="mintstat" style="margin:8px 0 0;font-size:13px;font-weight:600"></p>
     <div class="yours">
       <div class="mrow"><span>Your minted</span><b id="cminted">—</b></div>
-      <div class="mrow"><span>Free mints left</span><b id="cfree">—</b></div>
+      <div class="mrow"><span>Free in this round</span><b id="cfree">—</b></div>
       <div class="mrow"><span>Your shares</span><b id="cshares">—</b></div>
       <div class="mrow"><span>Share of all shares</span><b id="csharepc">—</b></div>
     </div>
@@ -205,10 +205,10 @@ footer a{color:var(--gold);text-decoration:none}
 <section class="blk">
   <div class="panel" id="pricing">
     <h3>Tiered pricing</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 10px">1 free to 12 · then the wallet is full · Prices in BNB, fixed by the contract — they never rise. Your tier follows your own wallet's mint count.</p>
+    <p class="mut" style="line-height:1.65;margin:0 0 10px">One free per wallet in every round — 333 free slots drop every 3 hours · max 12 per wallet, then the wallet is full · Prices in BNB, fixed by the contract — they never rise.</p>
     <table>
       <tr><th>Tier</th><th>Mint</th><th>Price</th></tr>
-      <tr id="prow1"><td>1</td><td>Mint 1</td><td>FREE · Agent ID<span class="curtag" hidden> · Current</span></td></tr>
+      <tr id="prow1"><td>1</td><td>Mint 1</td><td>FREE in a round · Agent ID<span class="curtag" hidden> · Current</span></td></tr>
       <tr id="prow2"><td>2</td><td>Mint 2</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
       <tr id="prow3"><td>3</td><td>Mint 3</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
       <tr id="prow4"><td>4</td><td>Mint 4</td><td>0.002 BNB<span class="curtag" hidden> · Current</span></td></tr>
@@ -369,8 +369,8 @@ async function showPass(a){
     $("cshares").textContent="0";const cs2=$("cshares2");if(cs2)cs2.textContent="0";$("csharepc").textContent="—";
     $("cpoints").textContent="0";$("cfree").textContent="1";
     $("crank").textContent="Bronze";$("cnext").textContent="150 pts → Silver";$("cserial").textContent="Nº —";
-    $("ctier").textContent="Tier 1 · FREE";
-    $("tiern").textContent="Your current tier: 1 — your first mint is FREE when the mint opens.";
+    $("ctier").textContent="Tier 1 · FREE rounds";
+    $("tiern").textContent="Your current tier: 1 — free mints drop in rounds of 333 every 3 hours when the mint opens; one free per wallet per round.";
     selectTier("bronze");
     $("passhint").textContent="The new BEWORK collection starts at zero. The mint opens with the new contract — your card, border and shares appear here the moment you mint.";
     return;
@@ -391,8 +391,8 @@ async function showPass(a){
     $("cfree").textContent=Math.max(0,1-minted);
     const curRow=minted>=12?12:minted+1;
     for(let i=1;i<=12;i++){const r=$("prow"+i);if(r){r.classList.toggle("cur",i===curRow);const tg=r.querySelector(".curtag");if(tg)tg.hidden=i!==curRow}}
-    $("ctier").textContent=minted>=12?"Max reached · 12 Passes":(minted<1?"Tier 1 · FREE":"Tier 2 · 0.002 BNB");
-    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 Passes minted.":(minted<1?"Your current tier: 1 — your next mint is FREE.":"Your current tier: 2 — your next mint is 0.002 BNB.");
+    $("ctier").textContent=minted>=12?"Max reached · 12 Passes":(minted<1?"Tier 1 · FREE rounds":"Tier 2 · 0.002 BNB");
+    $("tiern").textContent=minted>=12?"Your wallet is at the max — 12 Passes minted.":(minted<1?"Your current tier: 1 — one free mint per round (333 free every 3 hours).":"Your current tier: 2 — your next mint is 0.002 BNB, or free in a round if a slot is open.");
     $("crank").textContent=myTier[1];
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";
     $("cserial").textContent=minted>0?("Nº "+String(minted).padStart(3,"0")+" · minter"):"Nº —";
@@ -411,7 +411,7 @@ $("sharex").onclick=()=>{
   const st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
-  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 1 free with a Binance Agent ID, then 0.002 BNB. Every mint earns 10 shares of the $BGEM allocation.\n\nCheck your pass:";
+  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 333 free every 3 hours for Binance Agent ID holders, otherwise 0.002 BNB. Every mint earns 10 shares of the $BGEM allocation.\n\nCheck your pass:";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
@@ -421,9 +421,9 @@ $("copyinvite").onclick=async()=>{
   setTimeout(()=>b.textContent="Copy invite link",1800);
 };
 function rp(){
-  if(!LIVE){$("pr").textContent="The BEWORK Mint Pass mint has not opened yet. The new collection starts at zero: 3,333 Passes, the first mint per wallet free, then 0.002 BNB each, max 12 per wallet, and 10 shares of the $BGEM allocation per mint. The new contract address will be published at https://bework.pro/skill.md the moment the mint opens. Do not mint on any previous BEWORK contract — it is not part of this collection.";return}
+  if(!LIVE){$("pr").textContent="The BEWORK Mint Pass mint has not opened yet. The new collection starts at zero: 3,333 Passes, free mints in rounds of 333 every 3 hours (one free per wallet per round), otherwise 0.002 BNB each, max 12 per wallet, and 10 shares of the $BGEM allocation per mint. The new contract address will be published at https://bework.pro/skill.md the moment the mint opens. Do not mint on any previous BEWORK contract — it is not part of this collection.";return}
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 1 per wallet is free, then 0.002 BNB each. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points.";
+  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: free mints drop in rounds — 333 free every 3 hours, one free per wallet per round; all other mints are 0.002 BNB each. quote() already accounts for a free slot: if your mint is free in the current round, bnbWei comes back 0. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};

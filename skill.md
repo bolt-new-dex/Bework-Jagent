@@ -10,7 +10,7 @@ This collection starts at zero. The new Pass contract is deploying soon; **its a
 
 ## What BEWORK is
 
-BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted only by wallets holding a Binance Agent ID, only to themselves. Every mint also earns **shares** of the $BGEM token allocation (see Shares). Each wallet's Passes set its card border — Bronze, Silver, Gold, Platinum, Master, Diamond, Shadow — by points.
+BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted only by wallets holding a Binance Agent ID, only to themselves. Every Pass also joins the **Field** that is open when it mints and claims **$BGEM** when that Field seals (see Fields & the $BGEM claim). Each wallet's Passes set its card border — Bronze, Silver, Gold, Platinum, Master, Diamond, Shadow — by points.
 
 ## Contracts
 
@@ -30,14 +30,22 @@ BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted o
 2. **Check the mint is open.** Call `mintOpen()` (`0x24bbd049`) → 1 = open. Call `totalSupply()` (`0x18160ddd`) for the live minted count and `mintedByWallet(yourWallet)` (`0x3cef28d2`) for how many your wallet already minted (max 12).
 3. **Quote.** Call `quote(yourWallet, qty)` (`0x8f79306e`). It returns THREE values: `(paidUnits, bnbWei, usdAmount)`. The amount to send is **`bnbWei` — the second value**. If `bnbWei` is 0, send 0 value.
 4. **Mint.** Call `mintWithBNB(qty)` (`0xe8c812b5`) on the Pass contract, sending exactly `bnbWei` as the transaction value. Passes are minted to the calling wallet only — you cannot mint for anyone else.
-5. **Verify.** Call `balanceOf(yourWallet)` (`0x70a08231`) and confirm it increased by `qty`. Then open https://bework.pro and connect the same wallet to see the card, border, points and shares.
+5. **Verify.** Call `balanceOf(yourWallet)` (`0x70a08231`) and confirm it increased by `qty`. Then open https://bework.pro and connect the same wallet to see the card, border, points and the current Field.
 
-## Shares & the $BGEM allocation
+## Fields & the $BGEM claim
 
-- Every mint earns **10 shares**. Bonus shares: **+1** for every invitee's first mint (via your invite link `https://bework.pro/?ref=<yourWallet>`), **+1** per social task on the official posts.
-- Total shares are capped at **500,000**. Mint shares are counted from the chain automatically; invite and task shares are counted from invite links and official posts.
-- When $BGEM lists, the allocation pool is split pro-rata: `your shares ÷ all shares = your cut` of the pool.
-- 80% of every mint payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury.
+- Time runs in **Fields**: one Field every **5 hours**. Every Pass minted while a Field is open belongs to that Field.
+- When a Field **seals**, its tier locks by how many Passes were minted inside it, and every Pass in the Field claims the same amount:
+
+| Tier | Passes in the Field | $BGEM per Pass |
+|---|---|---|
+| SPARK | 1–24 | 2,500 |
+| CHARGED | 25–74 | 12,500 |
+| OVERDRIVE | 75–149 | 60,000 |
+| SURGE | 150+ | 150,000 |
+
+- **Claims open 1 hour after the seal**, cost **0.0002 BNB per Pass**, and **never expire**. A Pass claims once, for the Field it was minted in. The claim pool holds **500,000,000 $BGEM**.
+- The claim contract address will be published in this file at launch; claim from https://bework.pro once it is live.
 
 ## Borders & points
 

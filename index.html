@@ -110,7 +110,7 @@ footer a{color:var(--gold);text-decoration:none}
 <header>
   <a class="logo" href="/">BEWORK <em>PASS</em></a>
   <nav>
-    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#shares">Shares</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
+    <a href="#board">Leaderboard</a><a href="#pricing">Pricing</a><a href="#claim">Claim</a><a href="#borders-sec">Borders</a><a href="#agentmint">Agent mint</a>
     <a class="btn dark" href="https://x.com/BeworkGem" target="_blank" rel="noopener">@BeworkGem</a>
     <button class="btn" id="wallet">Connect Binance Wallet</button>
   </nav>
@@ -123,13 +123,14 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="wstat" id="wstat">Wallet not connected</div>
     <div class="mrow"><span>Current tier</span><b id="ctier">Tier 1 · FREE rounds</b></div>
     <div class="mrow"><span>Next serial</span><b id="ns">#…</b></div>
-    <div class="mrow"><span>You receive</span><b>A graded collector card + $BGEM allocation</b></div>
+    <div class="mrow"><span>You receive</span><b>A graded collector card + a $BGEM claim</b></div>
     <div class="big"><span style="font-size:16px;font-weight:600;opacity:.7">Total Passes&nbsp;</span><span id="bn">…</span><span style="font-size:16px;font-weight:600;opacity:.7"> / 3,333</span></div>
     <div class="bar"><i id="bi"></i></div>
-    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes. Free mints drop in rounds — 333 free every 3 hours, one per wallet per round — and every other mint is 0.002 BNB. Each mint earns 10 shares, plus one for every invitee's first mint and one for each social task. 80% of every payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury. Only 3,333 Passes — and 500,000 shares — will ever exist.</p>
+    <p style="font-size:13px;line-height:1.55;margin:10px 0 2px;opacity:.85">Each Agent ID mints up to 12 Passes. Free mints drop in rounds — 333 free every 3 hours, one per wallet per round — and every other mint is 0.002 BNB. Every Pass joins the Field that is open when it mints: Fields run 5 hours, then seal and lock a tier — the more Passes in the Field, the more $BGEM each one claims. Claims open 1 hour after the seal and never expire. Only 3,333 Passes will ever exist.</p>
     <div class="mrow"><span>Mint status</span><b id="ms">…</b></div>
     <div class="mrow"><span>Price</span><b>333 free every 3 hrs · else 0.002 BNB each</b></div>
-    <div class="mrow"><span>Total shares</span><b id="tshares">…</b></div>
+    <div class="mrow"><span>Current Field</span><b id="fieldnow">…</b></div>
+    <div class="mrow"><span>Field seals in</span><b id="fieldcd">…</b></div>
     <div class="mrow"><span>Contract</span><b>New contract — soon</b></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
     <div style="display:flex;align-items:center;gap:10px;margin-top:16px"><span style="flex:1;font-size:14px;font-weight:600">Or mint yourself — how many</span><button class="btn black" id="hmi" aria-label="Fewer">−</button><b id="hqn" style="font-family:'Space Grotesk',sans-serif;font-size:22px">1</b><button class="btn black" id="hpl" aria-label="More">+</button></div>
@@ -138,8 +139,8 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="yours">
       <div class="mrow"><span>Your minted</span><b id="cminted">—</b></div>
       <div class="mrow"><span>Free in this round</span><b id="cfree">—</b></div>
-      <div class="mrow"><span>Your shares</span><b id="cshares">—</b></div>
-      <div class="mrow"><span>Share of all shares</span><b id="csharepc">—</b></div>
+      <div class="mrow"><span>Your Passes this Field</span><b id="cfield">—</b></div>
+      <div class="mrow"><span>Your claimable</span><b id="cclaim">—</b></div>
     </div>
     <div class="rowbtns">
       <button class="btn black" id="sharex" style="flex:1">Share my pass on X</button>
@@ -171,7 +172,7 @@ footer a{color:var(--gold);text-decoration:none}
       <div><b id="cserial">Nº —</b><span>Serial</span></div>
       <div><b id="cagent">—</b><span>Agent ID</span></div>
       <div><b id="cnpc">—</b><span>Passes held</span></div>
-      <div><b id="cshr">—</b><span>Shares</span></div>
+      <div><b id="cftier">—</b><span>Field tier</span></div>
       <div><b id="cpoints">—</b><span>Points</span></div>
       <div><b id="cnext">150 pts</b><span>To next border</span></div>
     </div>
@@ -188,7 +189,7 @@ footer a{color:var(--gold);text-decoration:none}
   </div>
   <div class="panel" id="borders-sec">
     <h3>Borders &amp; points</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per Pass held — nothing else buys points. Points set your border; shares set your $BGEM allocation.</p>
+    <p class="mut" style="line-height:1.65;margin:0 0 8px">100 points per Pass held — nothing else buys points. Points set your border; the Field your Pass was minted in sets its $BGEM claim.</p>
     <table>
       <tr><th>Border</th><th>Points</th></tr>
       <tr><td>01 · Bronze</td><td>0 – 149</td></tr>
@@ -226,13 +227,22 @@ footer a{color:var(--gold);text-decoration:none}
 </section>
 
 <section class="blk">
-  <div class="panel" id="shares">
-    <h3>Shares &amp; the $BGEM allocation</h3>
-    <p class="mut" style="line-height:1.65;margin:0 0 6px">BEWORK runs on shares. Every mint earns <b style="color:var(--txt)">10 shares</b> — plus <b style="color:var(--txt)">1 share</b> for every invitee's first mint and <b style="color:var(--txt)">1 share</b> for each social task. When $BGEM lists, the allocation pool is split by shares: your shares &divide; all shares = your cut. 80% of every mint payment waits for the $BGEM pool on PancakeSwap; 20% goes to the treasury.</p>
-    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Total shares</span><b id="tshares2">…</b></div>
-    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Your shares</span><b id="cshares2">—</b></div>
-    <p class="mut" style="margin:10px 0 0">Connect your wallet to see your shares. Mint shares are read from the chain; invite and task shares are counted into the board below.</p>
-    <table style="margin-top:14px"><thead><tr><th>Rank</th><th>Wallet</th><th>Invite + task shares</th></tr></thead><tbody id="bonusboard"><tr><td colspan="3" class="mut">Loading…</td></tr></tbody></table>
+  <div class="panel" id="claim">
+    <h3>Fields &amp; the $BGEM claim</h3>
+    <p class="mut" style="line-height:1.65;margin:0 0 6px">BEWORK runs on <b style="color:var(--txt)">Fields</b> — a new one every <b style="color:var(--txt)">5 hours</b>. Every Pass you mint joins the Field that is open at that moment. When the Field seals, its tier locks by how many Passes were minted inside it, and every Pass in the Field claims the same $BGEM per Pass. Claims open <b style="color:var(--txt)">1 hour after the seal</b>, cost <b style="color:var(--txt)">0.0002 BNB per Pass</b>, and <b style="color:var(--txt)">never expire</b>. The claim pool holds 500,000,000 $BGEM.</p>
+    <table style="margin-top:10px">
+      <tr><th>Field tier</th><th>Passes in the Field</th><th>$BGEM per Pass</th></tr>
+      <tr><td>SPARK</td><td>1 – 24</td><td>2,500</td></tr>
+      <tr><td>CHARGED</td><td>25 – 74</td><td>12,500</td></tr>
+      <tr><td>OVERDRIVE</td><td>75 – 149</td><td>60,000</td></tr>
+      <tr><td>SURGE</td><td>150+</td><td>150,000</td></tr>
+    </table>
+    <div class="mrow" style="border-color:var(--line);margin-top:12px"><span style="color:var(--mut)">Current Field</span><b id="fieldnow2">…</b></div>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Passes in this Field</span><b id="fieldcount">…</b></div>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Field tier now</span><b id="fieldtier">…</b></div>
+    <div class="mrow" style="border-color:var(--line)"><span style="color:var(--mut)">Your claimable</span><b id="cclaim2">—</b></div>
+    <button class="btn black" id="claimbtn" style="width:100%;margin-top:12px">Claim $BGEM</button>
+    <p class="mut" id="claimnote" style="margin:10px 0 0">Fields start with the new contract at launch — the first Field opens the moment the mint does.</p>
   </div>
 </section>
 
@@ -273,6 +283,13 @@ const TIERS=[["bronze","Bronze",0],["silver","Silver",150],["gold","Gold",300],[
 function tierOf(p){let t=TIERS[0];for(const x of TIERS)if(p>=x[2])t=x;return t}
 function nextOf(p){for(const x of TIERS)if(p<x[2])return x;return null}
 const TIERCOLORS={bronze:"#d08a4a",silver:"#d7dee6",gold:"#f0b90b",platinum:"#a8d8e6",master:"#ffb347",diamond:"#9fdcff",shadow:"#9a8cff"};
+const FIELD_LEN=5*3600; // one Field every 5 hours
+let FIELD_EPOCH=0; // unix start of Field Nº 1 — set when the claim system deploys
+const FT=[[1,"SPARK",2500],[25,"CHARGED",12500],[75,"OVERDRIVE",60000],[150,"SURGE",150000]];
+function ftierOf(n){let t=null;for(const x of FT)if(n>=x[0])t=x;return t}
+function cdText(s){if(s<0)s=0;const h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60;return h+"h "+String(m).padStart(2,"0")+"m "+String(ss).padStart(2,"0")+"s"}
+function fieldNow(){if(!FIELD_EPOCH)return null;const now=Math.floor(Date.now()/1000);if(now<FIELD_EPOCH)return null;const n=Math.floor((now-FIELD_EPOCH)/FIELD_LEN)+1;return{n,seal:FIELD_EPOCH+n*FIELD_LEN}}
+function tickField(){const f=fieldNow();if(!f)return;const el=$("fieldcd");if(el)el.textContent=cdText(f.seal-Math.floor(Date.now()/1000))}
 function selectTier(key){
   viewTier=key;
   $("cardfront").src="cards/card-"+key+"-front.webp";
@@ -316,7 +333,8 @@ async function live(){
     $("bn").textContent="0";
     $("bi").style.width="0%";
     $("ms").textContent="Opens soon — new contract";
-    $("tshares").textContent="0 / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent="0 / 500,000";
+    $("fieldnow").textContent="Opens at launch";const fn2=$("fieldnow2");if(fn2)fn2.textContent="Opens at launch";
+    $("fieldcd").textContent="—";const fct=$("fieldcount");if(fct)fct.textContent="0";const ftr=$("fieldtier");if(ftr)ftr.textContent="—";
     $("ns").textContent="#1";
     latest();
     return;
@@ -330,7 +348,10 @@ async function live(){
     if(MINTED>=3333){ms.textContent="Sold out"}
     else if(word(o)===1n){ms.textContent="Minting live"}
     else{ms.textContent="Mint paused"}
-    $("tshares").textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000";
+    const f=fieldNow();
+    if(f){$("fieldnow").textContent="Nº "+f.n;const fn2=$("fieldnow2");if(fn2)fn2.textContent="Nº "+f.n;tickField()}
+    else{$("fieldnow").textContent="—";const fn2=$("fieldnow2");if(fn2)fn2.textContent="—";$("fieldcd").textContent="—"}
+    const fct=$("fieldcount");if(fct)fct.textContent="—";const ftr=$("fieldtier");if(ftr)ftr.textContent="—"; // per-Field counts are read from the claim contract once it is wired at launch
     $("ns").textContent=MINTED>=3333?"—":"#"+(MINTED+1).toLocaleString("en-US");
     latest();
   }catch(e){}
@@ -365,14 +386,14 @@ async function showPass(a){
   $("cwallet").textContent=short(a);
   if(!LIVE){
     myMinted=0;myTier=TIERS[0];
-    $("cagent").textContent="—";$("cnpc").textContent="0";$("cshr").textContent="0";$("cminted").textContent="0 / 12";
-    $("cshares").textContent="0";const cs2=$("cshares2");if(cs2)cs2.textContent="0";$("csharepc").textContent="—";
+    $("cagent").textContent="—";$("cnpc").textContent="0";$("cftier").textContent="—";$("cminted").textContent="0 / 12";
+    $("cfield").textContent="0";$("cclaim").textContent="0 BGEM";const cc2=$("cclaim2");if(cc2)cc2.textContent="0 BGEM";
     $("cpoints").textContent="0";$("cfree").textContent="1";
     $("crank").textContent="Bronze";$("cnext").textContent="150 pts → Silver";$("cserial").textContent="Nº —";
     $("ctier").textContent="Tier 1 · FREE rounds";
     $("tiern").textContent="Your current tier: 1 — free mints drop in rounds of 333 every 3 hours when the mint opens; one free per wallet per round.";
     selectTier("bronze");
-    $("passhint").textContent="The new BEWORK collection starts at zero. The mint opens with the new contract — your card, border and shares appear here the moment you mint.";
+    $("passhint").textContent="The new BEWORK collection starts at zero. The mint opens with the new contract — your card, border and first Field appear here the moment you mint.";
     return;
   }
   try{
@@ -384,9 +405,8 @@ async function showPass(a){
     myTier=tierOf(points);
     const nx=nextOf(points);
     $("cagent").innerHTML=word(has)===1n?"<span style='color:var(--gn)'>Yes</span>":"<span style='color:var(--pk)'>No</span>";
-    const myShares=minted*10+(BONUS[account.toLowerCase()]||0),totShares=MINTED*10+BONUS_TOT;
-    $("cnpc").textContent=held;$("cshr").textContent=myShares.toLocaleString("en-US");$("cminted").textContent=minted+" / 12";
-    $("cshares").textContent=myShares.toLocaleString("en-US");const cs2=$("cshares2");if(cs2)cs2.textContent=myShares.toLocaleString("en-US");$("csharepc").textContent=totShares>0?(myShares/totShares*100).toFixed(2)+"%":"—";
+    $("cnpc").textContent=held;$("cftier").textContent="—";$("cminted").textContent=minted+" / 12";
+    $("cfield").textContent="—";$("cclaim").textContent="—";const cc2=$("cclaim2");if(cc2)cc2.textContent="—"; // per-Field wallet reads land with the claim contract
     $("cpoints").textContent=points.toLocaleString("en-US");
     $("cfree").textContent=Math.max(0,1-minted);
     const curRow=minted>=12?12:minted+1;
@@ -411,7 +431,7 @@ $("sharex").onclick=()=>{
   const st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
-  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 333 free every 3 hours for Binance Agent ID holders, otherwise 0.002 BNB. Every mint earns 10 shares of the $BGEM allocation.\n\nCheck your pass:";
+  const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 333 free every 3 hours for Binance Agent ID holders, otherwise 0.002 BNB. Every Pass claims $BGEM when its Field seals — a new Field every 5 hours.\n\nCheck your pass:";
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
@@ -421,9 +441,9 @@ $("copyinvite").onclick=async()=>{
   setTimeout(()=>b.textContent="Copy invite link",1800);
 };
 function rp(){
-  if(!LIVE){$("pr").textContent="The BEWORK Mint Pass mint has not opened yet. The new collection starts at zero: 3,333 Passes, free mints in rounds of 333 every 3 hours (one free per wallet per round), otherwise 0.002 BNB each, max 12 per wallet, and 10 shares of the $BGEM allocation per mint. The new contract address will be published at https://bework.pro/skill.md the moment the mint opens. Do not mint on any previous BEWORK contract — it is not part of this collection.";return}
+  if(!LIVE){$("pr").textContent="The BEWORK Mint Pass mint has not opened yet. The new collection starts at zero: 3,333 Passes, free mints in rounds of 333 every 3 hours (one free per wallet per round), otherwise 0.002 BNB each, max 12 per wallet, and every Pass joins the Field open at mint time — Fields seal every 5 hours and lock a $BGEM tier per Pass (SPARK 2,500 · CHARGED 12,500 · OVERDRIVE 60,000 · SURGE 150,000), claims open 1 hour after the seal and never expire. The new contract address will be published at https://bework.pro/skill.md the moment the mint opens. Do not mint on any previous BEWORK contract — it is not part of this collection.";return}
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: free mints drop in rounds — 333 free every 3 hours, one free per wallet per round; all other mints are 0.002 BNB each. quote() already accounts for a free slot: if your mint is free in the current round, bnbWei comes back 0. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points.";
+  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: free mints drop in rounds — 333 free every 3 hours, one free per wallet per round; all other mints are 0.002 BNB each. quote() already accounts for a free slot: if your mint is free in the current round, bnbWei comes back 0. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points. Your Passes joined the Field that was open when you minted — it seals within 5 hours and locks its $BGEM tier; claims open 1 hour after the seal and never expire.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};
@@ -446,23 +466,12 @@ $("mintbtn").onclick=async()=>{
     const wei=word(q,1);
     mstat(wei===0n?"This one is free — confirm in your wallet…":"Confirm in your wallet — total "+(Number(wei)/1e18).toFixed(6)+" BNB…");
     await sendMint({to:NFT,data:"0xe8c812b5"+pad(hqty),value:"0x"+wei.toString(16)});
-    mstat("Minted! Your card, shares and border just updated.",1);
+    mstat("Minted! Your card, border and Field just updated.",1);
     live();showPass(account);
   }catch(e){mstat(e.message&&e.message.includes("User rejected")?"Cancelled in the wallet.":("Mint failed: "+(e.message||e)))}
 };
-let BONUS={},BONUS_TOT=0;
-async function loadBonus(){
-  try{
-    const r=await fetch("shares.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json();
-    BONUS={};for(const k in (j.bonus||{}))BONUS[k.toLowerCase()]=Number(j.bonus[k])||0;
-    BONUS_TOT=Object.values(BONUS).reduce((a,b)=>a+b,0);
-    const rows=Object.entries(BONUS).sort((a,b)=>b[1]-a[1]).slice(0,100);
-    const bb=$("bonusboard");if(bb)bb.innerHTML=rows.length?rows.map((e,i)=>"<tr><td>"+(i+1)+"</td><td>"+short(e[0])+"</td><td>"+e[1].toLocaleString("en-US")+"</td></tr>").join(""):"<tr><td colspan='3' class='mut'>No invite or task shares counted yet — the first count lands with the launch post.</td></tr>";
-    if(MINTED>0){$("tshares").textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000";const ts2=$("tshares2");if(ts2)ts2.textContent=(MINTED*10+BONUS_TOT).toLocaleString("en-US")+" / 500,000"}
-    if(account)showPass(account);
-  }catch(e){}
-}
-loadBonus();live();setInterval(live,30000);
+$("claimbtn").onclick=()=>{const n=$("claimnote");if(n)n.textContent=LIVE?"Claims open 1 hour after each Field seals — the claim contract is wired into this button at launch.":"Fields start with the new contract at launch — the first Field opens the moment the mint does."};
+live();setInterval(live,30000);setInterval(tickField,1000);
 (async()=>{const p=provider();if(!p)return;try{const a=await p.request({method:"eth_accounts"});if(a&&a.length)showPass(a[0])}catch(e){}})();
 </script>
 </body>

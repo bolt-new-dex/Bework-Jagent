@@ -11,10 +11,10 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bework.pro/">
 <meta property="og:title" content="BEWORK Mint Pass">
-<meta property="og:description" content="A graded collector card + BEWORK Pass allocation for every Binance Agent ID.">
-<meta property="og:image" content="https://bework.pro/og-image.png">
+<meta property="og:description" content="A graded collector card + $BGEM allocation for every Binance Agent ID.">
+<meta property="og:image" content="https://bework.pro/cards/card-gold-front.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://bework.pro/og-image.png">
+<meta name="twitter:image" content="https://bework.pro/cards/card-gold-front.webp">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
 <style>
 :root{--bg:#0d0a05;--panel:#14100a;--panel2:#1a1409;--line:#2b2113;--tx:#f5f3ec;--mu:#a79c86;--gold:#f0b90b;--gold2:#ffd84d;--gn:#3ddc84;--pk:#ff5d7a;color-scheme:dark}
@@ -130,6 +130,9 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="mrow"><span>Total shares</span><b id="tshares">…</b></div>
     <div class="mrow"><span>Contract</span><a href="https://bscscan.com/address/0x78eDD42101e889cC3Ce4B24CBb0Fc774082BcAee" target="_blank" rel="noopener">0x78eD…caee</a></div>
     <a class="btn black" href="#agentmint">Mint with an agent</a>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:16px"><span style="flex:1;font-size:14px;font-weight:600">Or mint yourself — how many</span><button class="btn black" id="hmi" aria-label="Fewer">−</button><b id="hqn" style="font-family:'Space Grotesk',sans-serif;font-size:22px">1</b><button class="btn black" id="hpl" aria-label="More">+</button></div>
+    <button class="btn black" id="mintbtn" style="width:100%;margin-top:10px">Mint with my wallet</button>
+    <p id="mintstat" style="margin:8px 0 0;font-size:13px;font-weight:600"></p>
     <div class="yours">
       <div class="mrow"><span>Your minted</span><b id="cminted">—</b></div>
       <div class="mrow"><span>Free mints left</span><b id="cfree">—</b></div>
@@ -235,6 +238,7 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="panel" id="agentmint">
     <h3>Mint with an agent</h3>
     <p class="mut" style="line-height:1.65;margin:0">Pick how many, then send the prompt below to the AI agent whose wallet holds a Binance Agent ID. The agent mints from its own wallet — one line in, Passes out.</p>
+    <p class="mut" style="line-height:1.65;margin:10px 0 0">AI agents: the full machine-readable guide lives at <a href="/skill.md" style="color:var(--gold);font-weight:700">bework.pro/skill.md</a>.</p>
     <div class="step" style="margin-top:14px"><span style="flex:1">How many</span><button class="btn dark" id="mi" aria-label="Fewer">−</button><b id="qn" style="font-family:'Space Grotesk',sans-serif;font-size:24px">1</b><button class="btn dark" id="pl" aria-label="More">+</button></div>
     <pre class="prompt" id="pr"></pre>
     <div class="rowbtns"><button class="btn" id="cp">Copy prompt</button><a class="btn dark" href="#preview">Back to your card</a></div>
@@ -243,7 +247,7 @@ footer a{color:var(--gold);text-decoration:none}
 
 <footer>
   BEWORK — 3,333 pixel Passes on BNB Chain. Mint Pass points are a community score read from public chain data; they are not a token and carry no cash value.<br>
-  Dev: <a href="https://x.com/BeworkGem" target="_blank" rel="noopener">@BeworkGem on X</a> · <a href="/">bework.pro</a>
+  Dev: <a href="https://x.com/BeworkGem" target="_blank" rel="noopener">@BeworkGem on X</a> · <a href="/">bework.pro</a> · <a href="/skill.md">Agent skill</a>
 </footer>
 </div>
 
@@ -297,7 +301,7 @@ $("flipbtn").onclick=()=>{
   flipped=!flipped;
   $("flipinner").classList.toggle("flipped",flipped);
   $("flipbtn").textContent=flipped?"Show front":"Flip card";
-  if(flipped&&account)drawQR("https://bework.pro/pass.html?ref="+account);
+  if(flipped&&account)drawQR("https://bework.pro/?ref="+account);
 };
 $("pausebtn").onclick=()=>{
   const s=$("sway"),p=s.classList.toggle("paused");
@@ -345,7 +349,7 @@ async function showPass(a){
     const [bal,mint,has]=await Promise.all([
       call(NFT,"0x70a08231"+adr(a)),call(NFT,"0x3cef28d2"+adr(a)),call(NFT,"0x4eab3ef2"+adr(a))
     ]);
-    const held=Number(word(bal)),minted=Number(word(mint));
+    const held=Number(word(bal)),minted=Number(word(mint));myMinted=minted;
     const points=held*100;
     myTier=tierOf(points);
     const nx=nextOf(points);
@@ -363,7 +367,7 @@ async function showPass(a){
     $("cnext").textContent=nx?((nx[2]-points).toLocaleString("en-US")+" pts → "+nx[1]):"Top border";
     $("cserial").textContent=minted>0?("Nº "+String(minted).padStart(3,"0")+" · minter"):"Nº —";
     selectTier(myTier[0]);
-    if(flipped)drawQR("https://bework.pro/pass.html?ref="+account);
+    if(flipped)drawQR("https://bework.pro/?ref="+account);
     $("passhint").textContent="This is your live pass — the card above is wearing your border. Flip it: the QR on the back is your real invite code. Share the card on X, or copy your invite link and bring the next worker in.";
   }catch(e){$("passhint").textContent="Could not read the chain for this wallet. Try again in a moment."}
 }
@@ -378,17 +382,17 @@ $("sharex").onclick=()=>{
   if(!account){st.textContent="Connect your wallet first — your pass needs your own numbers.";return}
   const rank=$("crank").textContent,pts=$("cpoints").textContent,npc=$("cnpc").textContent;
   const text="My BEWORK Mint Pass is live. Border: "+rank+" · "+pts+" points · "+npc+" Passes in my crew.\n\n3,333 pixel Passes on BNB Chain — 1 free with a Binance Agent ID, then 0.002 BNB. Every mint earns 10 shares of the $BGEM allocation.\n\nCheck your pass:";
-  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/pass.html?ref="+account),"_blank");
+  window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(text)+"&url="+encodeURIComponent("https://bework.pro/?ref="+account),"_blank");
 };
 $("copyinvite").onclick=async()=>{
   const b=$("copyinvite"),st=$("sharestat");
   if(!account){st.textContent="Connect your wallet first — the invite link carries your address.";return}
-  try{await navigator.clipboard.writeText("https://bework.pro/pass.html?ref="+account);b.textContent="Link copied"}catch(e){st.textContent="Copy this link: https://bework.pro/pass.html?ref="+account}
+  try{await navigator.clipboard.writeText("https://bework.pro/?ref="+account);b.textContent="Link copied"}catch(e){st.textContent="Copy this link: https://bework.pro/?ref="+account}
   setTimeout(()=>b.textContent="Copy invite link",1800);
 };
 function rp(){
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 1 per wallet is free, then 0.002 BNB each. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") to get bnbWei, then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If the result is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/pass.html and connect the same wallet to see your BEWORK Mint Pass, border and points.";
+  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: the first 1 per wallet is free, then 0.002 BNB each. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};
@@ -396,7 +400,25 @@ $("cp").onclick=async()=>{const b=$("cp");try{await navigator.clipboard.writeTex
 const ref=new URLSearchParams(location.search).get("ref");
 if(ref&&/^0x[0-9a-fA-F]{40}$/.test(ref)){const n=$("refnote");n.hidden=false;n.textContent="You were invited by "+short(ref)+" — mint your first Pass on the homepage, then come back here for your own pass."}
 selectTier("bronze");
-rp();let BONUS={},BONUS_TOT=0;
+rp();let hqty=1,myMinted=0;
+$("hmi").onclick=()=>{hqty=Math.max(1,hqty-1);$("hqn").textContent=hqty};
+$("hpl").onclick=()=>{hqty=Math.min(12,hqty+1);$("hqn").textContent=hqty};
+function mstat(t,ok){const e=$("mintstat");if(e){e.textContent=t;e.style.color=ok?"#0a7a3d":""}}
+async function sendMint(tx){const p=provider();if(!p)throw new Error("No wallet found");const txh=await p.request({method:"eth_sendTransaction",params:[{from:account,...tx}]});for(let i=0;i<40;i++){const r=await p.request({method:"eth_getTransactionReceipt",params:[txh]});if(r){if(r.status!=="0x1")throw new Error("Transaction failed on chain");return txh}await new Promise(r=>setTimeout(r,3000))}throw new Error("Timed out waiting for confirmation")}
+$("mintbtn").onclick=async()=>{
+  if(!account){mstat("Connect your wallet first (top of the page).");return}
+  if(myMinted+hqty>12){mstat("Your wallet already minted "+myMinted+" of the max 12 — lower the amount.");return}
+  try{
+    mstat("Reading the exact price from the contract…");
+    const q=await call(NFT,"0x8f79306e"+adr(account)+pad(hqty));
+    const wei=word(q,1);
+    mstat(wei===0n?"This one is free — confirm in your wallet…":"Confirm in your wallet — total "+(Number(wei)/1e18).toFixed(6)+" BNB…");
+    await sendMint({to:NFT,data:"0xe8c812b5"+pad(hqty),value:"0x"+wei.toString(16)});
+    mstat("Minted! Your card, shares and border just updated.",1);
+    live();showPass(account);
+  }catch(e){mstat(e.message&&e.message.includes("User rejected")?"Cancelled in the wallet.":("Mint failed: "+(e.message||e)))}
+};
+let BONUS={},BONUS_TOT=0;
 async function loadBonus(){
   try{
     const r=await fetch("shares.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json();

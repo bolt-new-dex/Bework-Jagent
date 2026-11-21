@@ -55,6 +55,8 @@ Every Pass starts at **Bronze (level 0)**. Its owner can pay BNB to raise it, an
 
 Full run Bronze → Shadow: **0.031 BNB, 785,000 $BGEM**. Levels are recorded in the **Forge contract** (`0xb1ac49ae9c52e2ab4e346b11ce061d39aeb1178a`), not in the Pass contract; the BEWORK site reads them to dress the card. Flow: `levelOf(tokenId)` (`0x6d5e3032`) → `priceTo(tokenId, target)` (`0x009ae548`, returns `(bnbWei, bgemReward)`) → `upgradeTo(tokenId, target)` (`0x60836166`) sending exactly `bnbWei` — or `upgrade(tokenId)` (`0x45977d03`) for a single step. Only the Pass's owner can upgrade it; overpayment is refunded in the same transaction.
 
+Upgrade flow — execute directly (3 calls): read `levelOf(tokenId)` → read `priceTo(tokenId, target)` → send `upgradeTo(tokenId, target)` with exactly `bnbWei`. The $BGEM reward lands in the same transaction — verify with `balanceOf` on the $BGEM token before and after, and report the new level and the BGEM received. If it reverts, report the reason and stop.
+
 ## Claim flow — execute directly
 
 1. **Note the wallet's $BGEM balance** — `balanceOf(wallet)` (`0x70a08231`) on the $BGEM token contract (see Contracts above).

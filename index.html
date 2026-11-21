@@ -255,6 +255,18 @@ footer a{color:var(--gold);text-decoration:none}
     <pre class="prompt" id="pr"></pre>
     <div class="rowbtns"><button class="btn" id="cp">Copy prompt</button><a class="btn dark" href="#preview">Back to your card</a></div>
   </div>
+  <div class="panel" style="margin-top:14px">
+    <h3>Paid mint prompt — free used up</h3>
+    <p class="mut" style="line-height:1.65;margin:0">Already used this round's free mint? Send this prompt to mint more as paid (0.002 BNB each) — it uses the same quantity picked above.</p>
+    <pre class="prompt" id="prpaid"></pre>
+    <div class="rowbtns"><button class="btn" id="cppaid">Copy paid prompt</button></div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <h3>Claim prompt</h3>
+    <p class="mut" style="line-height:1.65;margin:0">Once a Field has sealed and its claims are open, send this prompt to your agent — it claims all your claimable $BGEM in one transaction.</p>
+    <pre class="prompt" id="prclaim"></pre>
+    <div class="rowbtns"><button class="btn" id="cpclaim">Copy claim prompt</button></div>
+  </div>
 </section>
 
 <footer>
@@ -458,11 +470,16 @@ $("copyinvite").onclick=async()=>{
 function rp(){
   if(!LIVE){$("pr").textContent="The BEWORK Mint Pass mint has not opened yet. The new collection starts at zero: 3,333 Passes, free mints in rounds of 333 every 3 hours (one free per wallet per round), otherwise 0.002 BNB each, max 12 per wallet, and every Pass joins the Field open at mint time — Fields seal every 5 hours and lock a $BGEM tier per Pass (SPARK 2,500 · CHARGED 12,500 · OVERDRIVE 60,000 · SURGE 150,000), claims open 1 hour after the seal and never expire. The new contract address will be published at https://bework.pro/skill.md the moment the mint opens. Do not mint on any previous BEWORK contract — it is not part of this collection.";return}
   $("qn").textContent=qty;
-  $("pr").textContent="Mint "+qty+" BEWORK NFT"+(qty>1?"s":"")+" on BNB Chain (chain id 56) from your own wallet.\n\nAbout it: BEWORK is 3,333 one-of-a-kind pixel Passes, generated from 8 trait layers and kept entirely on chain. Only a wallet holding a Binance .ai Agent ID can mint, and only to itself.\n\nPricing: free mints drop in rounds — 333 free every 3 hours, one free per wallet per round; all other mints are 0.002 BNB each. quote() already accounts for a free slot: if your mint is free in the current round, bnbWei comes back 0. Pay with BNB. Max 12 per wallet.\n\nContract: "+NFT+" (BNB Smart Chain, ERC-721)\nHow: call quote(yourWallet, "+qty+") — it returns three values (paidUnits, bnbWei, usdAmount); the amount to send is bnbWei, the second value. Then call mintWithBNB("+qty+") sending exactly that bnbWei as value (any excess is refunded). If bnbWei is 0, send 0 value.\n\nThe NFTs are minted to the calling wallet only.\n\nAfter minting, open https://bework.pro/ and connect the same wallet to see your BEWORK Mint Pass, border and points. Your Passes joined the Field that was open when you minted — it seals within 5 hours and locks its $BGEM tier; claims open 1 hour after the seal and never expire.";
+  $("pr").textContent="Mint "+qty+" BEWORK Pass"+(qty>1?"es":"")+" for me on BNB Chain (chain id 56). Execute directly — no questions, no extra steps.\n\nContract: "+NFT+"\n\n1. Call quote(yourWallet, "+qty+") — selector 0x8f79306e. It returns 3 numbers; the BNB to pay is the 2nd one (bnbWei).\n2. Call mintWithBNB("+qty+") — selector 0xe8c812b5 — sending exactly that bnbWei as value (send 0 if quote says 0).\n3. Report my new token ids.\n\nRules: your wallet must hold a Binance Agent ID, or the mint reverts — if it reverts, report the reason and stop. The first mint in each 3-hour round is free while the round's 333 slots last; quote already includes that. Max 12 per wallet. Full guide: https://bework.pro/skill.md";
+  $("prpaid").textContent="Mint "+qty+" more BEWORK Pass"+(qty>1?"es":"")+" for me as PAID mints on BNB Chain (chain id 56) — my free mint for this round is already used. Execute directly — no questions.\n\nContract: "+NFT+"\n\n1. Call quote(yourWallet, "+qty+") — selector 0x8f79306e. The BNB to pay is the 2nd number returned — expect 0.002 BNB × "+qty+".\n2. Call mintWithBNB("+qty+") — selector 0xe8c812b5 — sending exactly that BNB.\n3. Report my new token ids.\n\nMax 12 per wallet in total (free + paid). Your wallet must hold a Binance Agent ID, or the mint reverts — if it reverts, report the reason and stop.";
+  $("prclaim").textContent="Claim my $BGEM from my BEWORK Passes on BNB Chain (chain id 56). Execute directly — no questions.\n\nPass contract: "+NFT+"\n$BGEM token: "+BGEM+"\n\n1. Note my $BGEM balance now: balanceOf(yourWallet) — selector 0x70a08231 — on the $BGEM token.\n2. Find my token ids: scan ownerOf(id) — selector 0x6352211e — for id 1..totalSupply (selector 0x18160ddd) on the Pass contract and keep the ids owned by my wallet (or use the ids from my mint transactions).\n3. Keep only the ids I can claim now: claimed(id) — selector 0xdbe7e3bd — is 0 AND claimOpensAt(fieldOf(id)) is in the past. fieldOf: 0x2191d452 · claimOpensAt: 0xd0eec3d0. My reward per Pass is fieldReward(field) — selector 0x795d9e74.\n4. Call claim(ids) — selector 0x6ba4c138 — with one array of all claimable ids, sending 0.0002 BNB × number of ids as value.\n5. Re-check my $BGEM balance on the token contract and report how much arrived.\n\nIf nothing is claimable yet, tell me when my Field's claims open (claimOpensAt) and stop. Claims never expire.";
 }
 $("mi").onclick=()=>{qty=Math.max(1,qty-1);rp()};
 $("pl").onclick=()=>{qty=Math.min(12,qty+1);rp()};
 $("cp").onclick=async()=>{const b=$("cp");try{await navigator.clipboard.writeText($("pr").textContent);b.textContent="Copied"}catch(e){const r=document.createRange();r.selectNodeContents($("pr"));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent="Selected — copy it"}setTimeout(()=>b.textContent="Copy prompt",1800)};
+function bindCopy(preId,btnId,label){$(btnId).onclick=async()=>{const b=$(btnId);try{await navigator.clipboard.writeText($(preId).textContent);b.textContent="Copied"}catch(e){const r=document.createRange();r.selectNodeContents($(preId));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent="Selected — copy it"}setTimeout(()=>b.textContent=label,1800)}}
+bindCopy("prpaid","cppaid","Copy paid prompt");
+bindCopy("prclaim","cpclaim","Copy claim prompt");
 const ref=new URLSearchParams(location.search).get("ref");
 if(ref&&/^0x[0-9a-fA-F]{40}$/.test(ref)){const n=$("refnote");n.hidden=false;n.textContent="You were invited by "+short(ref)+" — mint your first Pass on the homepage, then come back here for your own pass."}
 selectTier("bronze");

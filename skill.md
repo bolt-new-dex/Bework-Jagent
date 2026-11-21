@@ -27,13 +27,25 @@ Do not mint on any previous BEWORK contract — it is not part of this collectio
 - Free mints drop in **rounds**: **333 free every 3 hours**, **one free per wallet per round** while slots last. Every other mint: **0.002 BNB each**. Max **12 per wallet**. `quote()` already accounts for a free slot — if the mint is free in the current round, `bnbWei` returns 0.
 - ALWAYS call `quote(yourWallet, qty)` first and send exactly the `bnbWei` it returns — the contract settles the exact amount at mint time and refunds any excess.
 
-## Mint flow
+## Mint flow — 3 calls, execute directly
 
-1. **Check the Agent ID.** Call `hasAgentId(yourWallet)` on the Pass contract (`0x4eab3ef2`). It must return 1. Without an Agent ID the mint reverts — there is no other lane.
-2. **Check the mint is open.** Call `mintOpen()` (`0x24bbd049`) → 1 = open. Call `totalSupply()` (`0x18160ddd`) for the live minted count and `mintedByWallet(yourWallet)` (`0x3cef28d2`) for how many your wallet already minted (max 12).
-3. **Quote.** Call `quote(yourWallet, qty)` (`0x8f79306e`). It returns THREE values: `(paidUnits, bnbWei, usdAmount)`. The amount to send is **`bnbWei` — the second value**. If `bnbWei` is 0, send 0 value.
-4. **Mint.** Call `mintWithBNB(qty)` (`0xe8c812b5`) on the Pass contract, sending exactly `bnbWei` as the transaction value. Passes are minted to the calling wallet only — you cannot mint for anyone else.
-5. **Verify.** Call `balanceOf(yourWallet)` (`0x70a08231`) and confirm it increased by `qty`. Then open https://bework.pro and connect the same wallet to see the card, border, points and the current Field.
+1. **Quote.** `quote(yourWallet, qty)` (`0x8f79306e`) → returns `(paidUnits, bnbWei, usdAmount)`. The BNB to send is **`bnbWei`, the second value** (0 = this mint is free).
+2. **Mint.** `mintWithBNB(qty)` (`0xe8c812b5`) with value = exactly `bnbWei`. Passes mint to the calling wallet only.
+3. **Report** the new token ids.
+
+Your wallet must hold a Binance Agent ID or the mint reverts — there is no other lane. The first mint in each 3-hour round is free while the round's 333 slots last; quote already includes it. Max 12 per wallet.
+
+**Paid mints (free used up):** the same 3 calls — quote simply returns the full price (qty × 0.002 BNB) once the round's free slot is gone or used.
+
+Checks if needed: `mintOpen()` `0x24bbd049` · `hasAgentId(wallet)` `0x4eab3ef2` · `mintedByWallet(wallet)` `0x3cef28d2` · `totalSupply()` `0x18160ddd`.
+
+## Claim flow — execute directly
+
+1. **Note the wallet's $BGEM balance** — `balanceOf(wallet)` (`0x70a08231`) on the $BGEM token contract (see Contracts above).
+2. **Find the wallet's token ids** — scan `ownerOf(id)` (`0x6352211e`) for id 1..`totalSupply()`, or use the ids from its mint transactions.
+3. **Keep the claimable ones** — `claimed(id)` (`0xdbe7e3bd`) is 0 AND `claimOpensAt(fieldOf(id))` is in the past. Helpers: `fieldOf(id)` `0x2191d452` · `claimOpensAt(field)` `0xd0eec3d0` · reward per Pass = `fieldReward(field)` `0x795d9e74`.
+4. **Claim** — `claim(ids)` (`0x6ba4c138`), one array of all claimable ids, value = 0.0002 BNB × number of ids.
+5. **Verify** — re-check the $BGEM balance and report how much arrived. If nothing is claimable yet, report when the Field's claims open — claims never expire.
 
 ## Fields & the $BGEM claim
 

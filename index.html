@@ -247,6 +247,24 @@ footer a{color:var(--gold);text-decoration:none}
 </section>
 
 <section class="blk">
+  <div class="panel" id="upgrade">
+    <h3>Upgrade your Pass</h3>
+    <p class="mut" style="line-height:1.65;margin:0 0 6px">Every Pass starts at <b style="color:var(--txt)">Bronze</b>. Pay BNB to raise it — <b style="color:var(--txt)">each level instantly pays you $BGEM</b> from the Forge pool. Levels are recorded on chain in the Forge contract, and your card on this site wears its real level. Bronze to Shadow costs 0.031 BNB in total and pays 785,000 $BGEM along the way.</p>
+    <table style="margin-top:10px">
+      <tr><th>Level</th><th>Cost to reach it</th><th>Instant $BGEM</th></tr>
+      <tr><td>01 · Silver</td><td>0.001 BNB</td><td>10,000</td></tr>
+      <tr><td>02 · Gold</td><td>0.002 BNB</td><td>25,000</td></tr>
+      <tr><td>03 · Platinum</td><td>0.003 BNB</td><td>50,000</td></tr>
+      <tr><td>04 · Master</td><td>0.005 BNB</td><td>100,000</td></tr>
+      <tr><td>05 · Diamond</td><td>0.008 BNB</td><td>200,000</td></tr>
+      <tr><td>06 · Shadow</td><td>0.012 BNB</td><td>400,000</td></tr>
+    </table>
+    <div id="upgbox" style="margin-top:12px"></div>
+    <p class="mut" id="upgnote" style="margin:10px 0 0">The Forge opens soon — the contract address will be published here at launch.</p>
+  </div>
+</section>
+
+<section class="blk">
   <div class="panel" id="agentmint">
     <h3>Mint with an agent</h3>
     <p class="mut" style="line-height:1.65;margin:0">Pick how many, then send the prompt below to the AI agent whose wallet holds a Binance Agent ID. The agent mints from its own wallet — one line in, Passes out.</p>
@@ -280,6 +298,8 @@ footer a{color:var(--gold);text-decoration:none}
 const $=i=>document.getElementById(i);
 const NFT="0xafbdd45e7a6719775a7909ba15eddf0f68f7df70";
 const BGEM="0x981d87d0251dddaadf6b1420f0de3095364979e9";
+const FORGE=""; // Forge (upgrade) contract — filled in at its launch
+const UPG_NAMES=["Bronze","Silver","Gold","Platinum","Master","Diamond","Shadow"];
 const LIVE=true;
 const STAKING="0x61063e84831cb4a92a309b12661e1f70e2fbc339";
 const WORK="0x87f16afc6219e59e0ff2dd59653d98def41a629c";
@@ -434,6 +454,7 @@ async function showPass(a){
     $("cnpc").textContent=held;$("cftier").textContent="—";$("cminted").textContent=minted+" / 12";
     $("cfield").textContent="…";$("cclaim").textContent="…";const cc2=$("cclaim2");if(cc2)cc2.textContent="…";
     computeClaimable(a);
+    loadUpgrades(a);
     $("cpoints").textContent=points.toLocaleString("en-US");
     try{const fa=await call(NFT,"0x9a5f5d31"+adr(a));$("cfree").textContent=word(fa)===1n?"1":"0"}catch(e){$("cfree").textContent="—"}
     const curRow=minted>=12?12:minted+1;
@@ -529,6 +550,41 @@ async function computeClaimable(a){
     $("cclaim").textContent=fmtW(total)+" BGEM";const cc2=$("cclaim2");if(cc2)cc2.textContent=fmtW(total)+" BGEM";
     window.MYCLAIM={ids,total};
   }catch(e){$("cfield").textContent="—";$("cclaim").textContent="—";const cc2=$("cclaim2");if(cc2)cc2.textContent="—"}
+}
+async function loadUpgrades(a){
+  const box=$("upgbox");if(!box)return;
+  if(!FORGE){box.innerHTML="";return}
+  $("upgnote").textContent="Forge contract: "+FORGE;
+  if(!MINTED){box.innerHTML="<p class='mut' style='margin:0'>No Passes minted yet.</p>";return}
+  box.innerHTML="<p class='mut' style='margin:0'>Reading your Passes…</p>";
+  try{
+    const me=a.toLowerCase(),owned=[];
+    for(let c=1;c<=MINTED;c+=60){
+      const ids=[];for(let i=c;i<=Math.min(c+59,MINTED);i++)ids.push(i);
+      const part=await Promise.all(ids.map(id=>call(NFT,"0x6352211e"+pad(id)).then(r=>"0x"+r.slice(26)).catch(()=>null)));
+      part.forEach((o,i)=>{if(o&&o.toLowerCase()===me)owned.push(ids[i])});
+    }
+    if(!owned.length){box.innerHTML="<p class='mut' style='margin:0'>This wallet holds no Passes yet — mint one above first.</p>";return}
+    const rows=[];
+    for(const id of owned){const lv=Number(word(await call(FORGE,"0x6d5e3032"+pad(id))));rows.push({id,lv})}
+    box.innerHTML=rows.map(r=>{
+      if(r.lv>=6)return "<div class='mrow' style='border-color:var(--line)'><span>Pass #"+r.id+" · <b style='color:var(--txt)'>Shadow</b></span><b>MAX</b></div>";
+      return "<div class='mrow' style='border-color:var(--line)'><span>Pass #"+r.id+" · <b style='color:var(--txt)'>"+UPG_NAMES[r.lv]+"</b></span><span><button class='btn dark' data-upg='"+r.id+"' data-to='"+(r.lv+1)+"'>+1 level</button> <button class='btn dark' data-upg='"+r.id+"' data-to='6'>To Shadow</button></span></div>";
+    }).join("");
+    box.querySelectorAll("[data-upg]").forEach(b=>b.onclick=()=>doUpgrade(Number(b.dataset.upg),Number(b.dataset.to),b));
+  }catch(e){box.innerHTML="<p class='mut' style='margin:0'>Could not read upgrades right now.</p>"}
+}
+async function doUpgrade(id,target){
+  const n=$("upgnote");
+  try{
+    if(n)n.textContent="Reading the exact price…";
+    const r=await call(FORGE,"0x009ae548"+pad(id)+pad(target));
+    const due=word(r,0),rew=word(r,1);
+    if(n)n.textContent="Confirm in your wallet — pay "+fmtW(due)+" BNB, receive "+fmtW(rew)+" BGEM…";
+    await sendMint({to:FORGE,data:"0x60836166"+pad(id)+pad(target),value:"0x"+due.toString(16)});
+    if(n)n.textContent="Upgraded! Pass #"+id+" is now "+UPG_NAMES[target]+" and "+fmtW(rew)+" BGEM is in your wallet.";
+    loadUpgrades(account);
+  }catch(e){if(n)n.textContent="Upgrade failed: "+(e.message||e)}
 }
 $("claimbtn").onclick=async()=>{
   const n=$("claimnote");

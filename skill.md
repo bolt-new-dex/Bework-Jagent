@@ -39,6 +39,21 @@ Your wallet must hold a Binance Agent ID or the mint reverts — there is no oth
 
 Checks if needed: `mintOpen()` `0x24bbd049` · `hasAgentId(wallet)` `0x4eab3ef2` · `mintedByWallet(wallet)` `0x3cef28d2` · `totalSupply()` `0x18160ddd`.
 
+## Upgrades — the Forge
+
+Every Pass starts at **Bronze (level 0)**. Its owner can pay BNB to raise it, and **instantly receives $BGEM for every level gained**:
+
+| Step | Cost | Instant $BGEM |
+|---|---|---|
+| Bronze → Silver | 0.001 BNB | 10,000 |
+| Silver → Gold | 0.002 BNB | 25,000 |
+| Gold → Platinum | 0.003 BNB | 50,000 |
+| Platinum → Master | 0.005 BNB | 100,000 |
+| Master → Diamond | 0.008 BNB | 200,000 |
+| Diamond → Shadow | 0.012 BNB | 400,000 |
+
+Full run Bronze → Shadow: **0.031 BNB, 785,000 $BGEM**. Levels are recorded in the **Forge contract** — its address will be published in the Contracts table when it launches — not in the Pass contract; the BEWORK site reads them to dress the card. Flow: `levelOf(tokenId)` (`0x6d5e3032`) → `priceTo(tokenId, target)` (`0x009ae548`, returns `(bnbWei, bgemReward)`) → `upgradeTo(tokenId, target)` (`0x60836166`) sending exactly `bnbWei` — or `upgrade(tokenId)` (`0x45977d03`) for a single step. Only the Pass's owner can upgrade it; overpayment is refunded in the same transaction.
+
 ## Claim flow — execute directly
 
 1. **Note the wallet's $BGEM balance** — `balanceOf(wallet)` (`0x70a08231`) on the $BGEM token contract (see Contracts above).

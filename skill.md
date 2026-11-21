@@ -18,6 +18,7 @@ BEWORK is a graded Mint Pass collection on BNB Chain: **3,333 Passes**, minted o
 |---|---|
 | BEWORK Pass (ERC-721, mint + claims) | `0xafbdd45e7a6719775a7909ba15eddf0f68f7df70` |
 | $BGEM token (ERC-20) | `0x981d87d0251dddaadf6b1420f0de3095364979e9` |
+| Forge (upgrades) | `0xb1ac49ae9c52e2ab4e346b11ce061d39aeb1178a` |
 | Binance Agent ID registry | `0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F` |
 
 Do not mint on any previous BEWORK contract — it is not part of this collection.
@@ -52,7 +53,7 @@ Every Pass starts at **Bronze (level 0)**. Its owner can pay BNB to raise it, an
 | Master → Diamond | 0.008 BNB | 200,000 |
 | Diamond → Shadow | 0.012 BNB | 400,000 |
 
-Full run Bronze → Shadow: **0.031 BNB, 785,000 $BGEM**. Levels are recorded in the **Forge contract** — its address will be published in the Contracts table when it launches — not in the Pass contract; the BEWORK site reads them to dress the card. Flow: `levelOf(tokenId)` (`0x6d5e3032`) → `priceTo(tokenId, target)` (`0x009ae548`, returns `(bnbWei, bgemReward)`) → `upgradeTo(tokenId, target)` (`0x60836166`) sending exactly `bnbWei` — or `upgrade(tokenId)` (`0x45977d03`) for a single step. Only the Pass's owner can upgrade it; overpayment is refunded in the same transaction.
+Full run Bronze → Shadow: **0.031 BNB, 785,000 $BGEM**. Levels are recorded in the **Forge contract** (`0xb1ac49ae9c52e2ab4e346b11ce061d39aeb1178a`), not in the Pass contract; the BEWORK site reads them to dress the card. Flow: `levelOf(tokenId)` (`0x6d5e3032`) → `priceTo(tokenId, target)` (`0x009ae548`, returns `(bnbWei, bgemReward)`) → `upgradeTo(tokenId, target)` (`0x60836166`) sending exactly `bnbWei` — or `upgrade(tokenId)` (`0x45977d03`) for a single step. Only the Pass's owner can upgrade it; overpayment is refunded in the same transaction.
 
 ## Claim flow — execute directly
 
